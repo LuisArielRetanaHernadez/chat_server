@@ -1,0 +1,48 @@
+{
+
+  "scripts": {
+
+    "start": "node server.js"
+
+  },
+
+  "name": "chat_server",
+
+  "version": "1.0.0",
+
+  "main": "app.js",
+
+  "keywords": [],
+
+  "author": "",
+
+  "license": "ISC",
+
+  "description": "",
+
+  "dependencies": {
+
+    "expres": "^0.0.5",
+
+    "express": "^4.18.2",
+
+    "express-validator": "^7.0.1",
+
+    "jsonwebtoken": "^9.0.2"
+
+  },
+
+  "devDependencies": {
+
+    "eslint": "^8.51.0",
+
+    "eslint-config-standard": "^17.1.0",
+
+    "nodemon": "^3.0.1",
+
+    "standard": "^17.1.0"
+
+  }
+
+}
+

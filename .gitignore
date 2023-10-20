@@ -1,0 +1,25 @@
+# Ignora los archivos y carpetas del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignora los archivos y carpetas del editor de código
+.vscode
+.idea
+
+# Ignora los archivos y carpetas de las dependencias
+node_modules
+vendor
+
+# Ignora los archivos y carpetas de los archivos compilados
+build
+dist
+
+# Ignora los archivos y carpetas de los archivos temporales
+*.log
+*.tmp
+*.swp
+
+# Ignora los archivos y carpetas de los archivos sensibles
+.env
+*.pem
+*.key
