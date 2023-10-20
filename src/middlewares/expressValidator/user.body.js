@@ -47,3 +47,18 @@ exports.registerUser = [
     .isAlphanumeric()
     .withMessage('Username must be alphanumeric')
 ]
+
+exports.loginUser = [
+  body('Email')
+    .notEmpty()
+    .withMessage('Email is required')
+    .isEmail()
+    .withMessage('Email must be valid'),
+  body('Password')
+    .notEmpty()
+    .withMessage('Password is required')
+    .isLength({ min: 8 })
+    .withMessage('Password must be at least 8 characters long')
+    .isAlphanumeric()
+    .withMessage('Password must be alphanumeric')
+]
