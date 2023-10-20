@@ -39,3 +39,29 @@ exports.register = tryCathc(async (req, res, next) => {
     status: 'success'
   })
 })
+
+exports.login = tryCathc(async (req, res, next) => {
+  const { email, password } = req.body
+
+  const user = await User.findOne({ email }).select('+password')
+
+  if (!user) {
+    return next(new AppError('is email register', 401))
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password)
+
+  if (!isMatch) {
+    return next(new AppError('is email register', 401))
+  }
+
+  user.password = undefined
+
+  return res.status(200).json({
+    message: 'user login',
+    data: {
+      user
+    },
+    status: 'success'
+  })
+})
