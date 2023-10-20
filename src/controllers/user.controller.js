@@ -2,7 +2,7 @@ const User = require('../database/models/User.model')
 const AppError = require('../utils/AppError')
 const tryCathc = require('../utils/tryCathc')
 
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { email } = req.body
