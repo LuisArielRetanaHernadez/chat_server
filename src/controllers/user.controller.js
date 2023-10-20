@@ -25,6 +25,10 @@ exports.register = tryCathc(async (req, res, next) => {
 
   const user = await User.create(dataDisinfect)
 
+  if (!user) {
+    return next(new AppError('error create user', 401))
+  }
+
   user.password = undefined
 
   return res.status(201).json({
