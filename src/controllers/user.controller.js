@@ -2,6 +2,8 @@ const User = require('../database/models/User.model')
 const AppError = require('../utils/AppError')
 const tryCathc = require('../utils/tryCathc')
 
+const jsonwebtoken = require('jsonwebtoken')
+
 const bcrypt = require('bcrypt')
 
 exports.register = tryCathc(async (req, res, next) => {
@@ -55,12 +57,15 @@ exports.login = tryCathc(async (req, res, next) => {
     return next(new AppError('is email register', 401))
   }
 
+  const token = await jsonwebtoken.sign({ id: user._id }, process.env.SECRET_SECRET, { expiresIn: process.env.SECRET_EXPIRE })
+
   user.password = undefined
 
   return res.status(200).json({
     message: 'user login',
     data: {
-      user
+      user,
+      token
     },
     status: 'success'
   })
