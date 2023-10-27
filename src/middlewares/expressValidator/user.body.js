@@ -32,7 +32,7 @@ exports.registerUser = [
     .withMessage('Password must be at least 8 characters long')
     .isAlphanumeric()
     .withMessage('Password must be alphanumeric'),
-  body('Password confirm')
+  body('PasswordConfirm')
     .notEmpty()
     .withMessage('Password confirm is required')
     .custom((value, { req }) => value === req.body.Password)
