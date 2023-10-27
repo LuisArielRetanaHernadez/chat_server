@@ -7,20 +7,21 @@ const jsonwebtoken = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 exports.register = tryCathc(async (req, res, next) => {
-  const { email } = req.body
+  const { Email } = req.body
 
-  const userFind = await User.findOne({ email })
+  const userFind = await User.findOne({ Email })
 
   if (userFind) {
     return next(new AppError('is email register', 401))
   }
 
-  const passwordHash = await bcrypt.hash(req.body.password, 8)
+  const salt = await bcrypt.genSalt(8)
+  const passwordHash = await bcrypt.hash(req.body.Password, salt)
 
   const dataDisinfect = {
     ...req.body,
-    password: passwordHash,
-    passwordConfirm: undefined
+    Password: passwordHash,
+    PasswordConfirm: undefined
   }
 
   delete dataDisinfect.passwordConfirm
@@ -31,7 +32,7 @@ exports.register = tryCathc(async (req, res, next) => {
     return next(new AppError('error create user', 401))
   }
 
-  user.password = undefined
+  delete user.Password
 
   return res.status(201).json({
     message: 'user created',
