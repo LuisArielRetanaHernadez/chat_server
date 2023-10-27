@@ -1,4 +1,4 @@
-const globalError = (req, res, next, error) => {
+const globalError = (error, req, res, next) => {
   error.statusCode = error.statusCode || 500
   error.status = error.status || 'error'
 
