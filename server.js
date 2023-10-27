@@ -1,9 +1,21 @@
 const app = require('./app')
 
-const { createServer } = require('http')
 const connectDB = require('./src/database/database')
 
+// socket
+const { Server } = require('socket.io')
+const { createServer } = require('http')
+
 const httpServer = createServer(app)
+const io = new Server(httpServer, {
+  cors: {
+    origin: '*'
+  }
+})
+
+io.on('connection', (socket) => {
+  console.log('user connect ', socket.id)
+})
 
 const startServer = () => {
   httpServer.listen(3000, () => {
@@ -13,3 +25,5 @@ const startServer = () => {
 }
 
 startServer()
+
+module.exports = io
