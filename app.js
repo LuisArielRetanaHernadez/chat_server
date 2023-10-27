@@ -10,7 +10,7 @@ const app = express()
 
 app.use(express.json())
 
-app.use('api/v1/users', routerUser)
+app.use('/api/v1/users', routerUser)
 app.use(globalError)
 
 module.exports = app
