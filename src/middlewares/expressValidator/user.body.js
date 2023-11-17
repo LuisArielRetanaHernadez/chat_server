@@ -30,8 +30,8 @@ exports.registerUser = [
     .withMessage('Password is required')
     .isLength({ min: 8 })
     .withMessage('Password must be at least 8 characters long')
-    .isAlphanumeric()
-    .withMessage('Password must be alphanumeric'),
+    .matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/)
+    .withMessage('Password must contain at least one uppercase letter, one lowercase letter, one number and one special character'),
   body('PasswordConfirm')
     .notEmpty()
     .withMessage('Password confirm is required')
