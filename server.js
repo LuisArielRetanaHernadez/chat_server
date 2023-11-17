@@ -5,7 +5,6 @@ const connectDB = require('./src/database/database')
 // socket
 const { Server } = require('socket.io')
 const { createServer } = require('http')
-const { default: chat } = require('./src/namespaces/chat.namespace')
 
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
@@ -15,7 +14,6 @@ const io = new Server(httpServer, {
 })
 
 const nameSpace = (socket) => {
-  chat(io, socket)
 }
 io.on('connection', nameSpace)
 
