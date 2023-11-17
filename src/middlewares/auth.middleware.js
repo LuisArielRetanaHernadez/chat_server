@@ -5,7 +5,7 @@ const tryCathc = require('../utils/tryCathc')
 
 const jwt = require('jsonwebtoken')
 
-exports.authUser = tryCathc((req, res, next) => {
+exports.auth = tryCathc((req, res, next) => {
   let token
 
   if (req.headers.authorization &&
