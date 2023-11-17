@@ -5,6 +5,7 @@ const connectDB = require('./src/database/database')
 // socket
 const { Server } = require('socket.io')
 const { createServer } = require('http')
+const nameSpace = require('./src/namespaces/nameSpace')
 
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
@@ -13,9 +14,8 @@ const io = new Server(httpServer, {
   }
 })
 
-io.on('connection', (socket) => {
-  console.log('user connect ', socket.id)
-})
+io.on('connection', nameSpace)
+// nameSpace(io)
 
 const startServer = () => {
   httpServer.listen(3000, () => {
@@ -25,5 +25,3 @@ const startServer = () => {
 }
 
 startServer()
-
-module.exports = io
