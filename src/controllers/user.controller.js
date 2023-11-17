@@ -5,6 +5,7 @@ const tryCathc = require('../utils/tryCathc')
 const jsonwebtoken = require('jsonwebtoken')
 
 const bcrypt = require('bcrypt')
+const { searchUser } = require('../utils/searchContact')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { Email } = req.body
@@ -69,5 +70,19 @@ exports.login = tryCathc(async (req, res, next) => {
       token
     },
     status: 'success'
+  })
+})
+
+exports.searchUsers = tryCathc(async (req, res, next) => {
+  const { search } = req.query
+  const { userCurrent } = req
+
+  const usersFind = await searchUser(userCurrent, search)
+
+  return res.status(200).json({
+    message: 'search users',
+    data: {
+      usersFind
+    }
   })
 })
