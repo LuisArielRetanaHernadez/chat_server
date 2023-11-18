@@ -5,7 +5,7 @@ const tryCathc = require('../utils/tryCathc')
 
 const jwt = require('jsonwebtoken')
 
-exports.auth = tryCathc((req, res, next) => {
+exports.auth = tryCathc(async (req, res, next) => {
   let token
 
   if (req.headers.authorization &&
@@ -15,7 +15,7 @@ exports.auth = tryCathc((req, res, next) => {
     return next(new AppError('Seccion invalida', 401))
   }
 
-  const userCurrent = jwt.verify(token, process.env.SECRET_SECRET)
+  const userCurrent = jwt.verify(token, process.env.JW_SECRET)
 
   if (!userCurrent) {
     return next(new AppError('Seccion invalida', 401))
