@@ -49,16 +49,16 @@ exports.registerUser = [
 ]
 
 exports.loginUser = [
-  body('Email')
+  body('email')
     .notEmpty()
     .withMessage('Email is required')
     .isEmail()
     .withMessage('Email must be valid'),
-  body('Password')
+  body('password')
     .notEmpty()
     .withMessage('Password is required')
     .isLength({ min: 8 })
     .withMessage('Password must be at least 8 characters long')
-    .isAlphanumeric()
-    .withMessage('Password must be alphanumeric')
+    .matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/)
+    .withMessage('Password must contain at least one uppercase letter, one lowercase letter, one number and one special character')
 ]
