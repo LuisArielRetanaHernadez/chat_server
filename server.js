@@ -6,6 +6,8 @@ const connectDB = require('./src/database/database')
 const { Server } = require('socket.io')
 const { createServer } = require('http')
 
+const namesSpace = require('./src/namesSpace')
+
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: {
@@ -13,9 +15,10 @@ const io = new Server(httpServer, {
   }
 })
 
-const nameSpace = (socket) => {
+const onConnection = (socket) => {
+  namesSpace(io, socket)
 }
-io.on('connection', nameSpace)
+io.on('connection', onConnection)
 
 const startServer = () => {
   httpServer.listen(3000, () => {
