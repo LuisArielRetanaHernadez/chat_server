@@ -12,6 +12,10 @@ const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: {
     origin: '*'
+  },
+  connectionStateRecovery: {
+    maxDisconnectionDuration: 1000,
+    skipMiddlewares: true
   }
 })
 
