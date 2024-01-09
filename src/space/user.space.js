@@ -9,11 +9,16 @@ module.exports = (io) => {
       return next(new AppError('Invalid token', 401))
     }
     console.log('token: ', token)
-    socket.user = token.id
+    socket.id = token.id
     return next()
   })
 
   io.of('/users').on('connection', async (socket) => {
     console.log('informacion del query: ', socket.handshake.query)
+    socket.on('list chat', async () => {
+      const contacts = await User.findOne({ _id: socket.id }).populate('contacts')
+      console.log('contacts: ', contacts)
+      socket.emit('list chat', contacts)
+    })
   })
 }
