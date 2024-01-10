@@ -50,13 +50,13 @@ exports.login = tryCathc(async (req, res, next) => {
   const user = await User.findOne({ Email: email })
 
   if (!user) {
-    return next(new AppError('is email register', 401))
+    return next(new AppError('invalide crendetials', 401))
   }
 
   const isMatch = await bcrypt.compare(password, user.Password)
 
   if (!isMatch) {
-    return next(new AppError('is email register', 401))
+    return next(new AppError('invalide crendetials', 401))
   }
 
   const token = await jsonwebtoken.sign({ id: user._id }, process.env.JW_SECRET, { expiresIn: process.env.JWT_EXPIRE })
@@ -74,10 +74,16 @@ exports.login = tryCathc(async (req, res, next) => {
 })
 
 exports.searchUsers = tryCathc(async (req, res, next) => {
-  const { search } = req.query
-  const { userCurrent } = req
+  const { user } = req.query
+  console.log('user: ', req.query)
 
-  const usersFind = await searchUser(userCurrent, search)
+  const usersFind = await User.find({
+    $or: [
+      { Name: { $regex: user, $options: 'i' } },
+      { Email: { $regex: user, $options: 'i' } },
+      { Username: { $regex: user, $options: 'i' } }
+    ]
+  })
 
   return res.status(200).json({
     message: 'search users',
