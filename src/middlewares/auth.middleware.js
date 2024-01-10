@@ -15,11 +15,12 @@ exports.auth = tryCathc(async (req, res, next) => {
     return next(new AppError('Seccion invalida', 401))
   }
 
-  const userCurrent = jwt.verify(token, process.env.JW_SECRET)
-
-  if (!userCurrent) {
-    return next(new AppError('Seccion invalida', 401))
-  }
+  const userCurrent = jwt.verify(token, process.env.JW_SECRET, (err, decoded) => {
+    if (err) {
+      return next(new AppError('Seccion invalida', 401))
+    }
+    return decoded
+  })
 
   req.userCurrent = userCurrent
 
