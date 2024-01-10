@@ -82,7 +82,7 @@ exports.searchUsers = tryCathc(async (req, res, next) => {
       { Email: { $regex: user, $options: 'i' } },
       { Username: { $regex: user, $options: 'i' } }
     ]
-  })
+  }).select('-Password')
 
   return res.status(200).json({
     message: 'search users',
