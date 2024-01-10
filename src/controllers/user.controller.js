@@ -5,7 +5,6 @@ const tryCathc = require('../utils/tryCathc')
 const jsonwebtoken = require('jsonwebtoken')
 
 const bcrypt = require('bcrypt')
-const { searchUser } = require('../utils/searchContact')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { Email } = req.body
