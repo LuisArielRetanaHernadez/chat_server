@@ -1,10 +1,10 @@
-const userSpace = require('./space/user.space')
-
-const namesSpace = (io, socket) => {
-  socket.onAny((event, ...args) => {
-    console.log(event, args)
+const namesSpace = (io) => {
+  io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.onAny((event, ...args) => {
+      console.log(event, args);
+    })
   })
-  userSpace(io)
 }
 
 module.exports = namesSpace
