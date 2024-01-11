@@ -4,21 +4,16 @@ const verifyToken = require('../utils/verifyToken')
 
 module.exports = (io) => {
   io.of('/users').use(async (socket, next) => {
-    const token = verifyToken(socket.handshake.query.token)
+    const token = verifyToken(socket.handshake.query.key)
     if (!token) {
       return next(new AppError('Invalid token', 401))
     }
-    console.log('token: ', token)
-    socket.id = token.id
+    socket.userId = token.id
     return next()
   })
 
-  io.of('/users').on('connection', async (socket) => {
+  io.of('/users').on('connection', (socket) => {
+    console.log('socket id ', socket.userId)
     console.log('informacion del query: ', socket.handshake.query)
-    socket.on('list chat', async () => {
-      const contacts = await User.findOne({ _id: socket.id }).populate('contacts')
-      console.log('contacts: ', contacts)
-      socket.emit('list chat', contacts)
-    })
   })
 }
