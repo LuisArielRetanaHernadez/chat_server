@@ -16,7 +16,9 @@ module.exports = (io) => {
     }
   })
   io.of('/users').on('connection', (socket) => {
-    console.log('socket id /user', socket.id)
-    console.log('informacion del query: ', socket.handshake.query)
+    socket.on('users online', () => {
+      const users = io.of('/users').sockets
+      socket.emit('users online', users)
+    })
   })
 }
