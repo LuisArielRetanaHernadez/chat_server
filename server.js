@@ -19,10 +19,7 @@ const io = new Server(httpServer, {
   }
 })
 
-const onConnection = (socket) => {
-  namesSpace(io, socket)
-}
-io.on('connection', onConnection)
+namesSpace(io)
 
 const startServer = () => {
   httpServer.listen(3000, () => {
