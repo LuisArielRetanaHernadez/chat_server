@@ -6,13 +6,12 @@ module.exports = (io) => {
   io.of('/users').use((socket, next) => {
     try {
       const token = verifyToken(socket.handshake.query.key)
-      if (!token) {
-        next(new AppError('Invalid token', 401))
-      }
       socket.userId = token.id
       return next()
     } catch (error) {
-      next(new AppError('Invalid token', 401))
+      const err = new AppError('not authorized')
+      err.data = { status: 401 }
+      next(err)
     }
   })
   io.of('/users').on('connection', (socket) => {
