@@ -19,7 +19,6 @@ module.exports = (io) => {
     }
   })
   io.of('/users').on('connection', (socket) => {
-    console.log('users connected', socket.user.id)
     const socketInformation = {
       userId: socket.user.id
     }
@@ -29,6 +28,10 @@ module.exports = (io) => {
     socket.on('users online', () => {
       const usersOnline = clients.filter((client) => client.userId !== socketInformation.userId)
       socket.emit('users online', usersOnline)
+    })
+    socket.on('getUserOnline', (userId) => {
+      const userOnline = clients.find((client) => client.userId === userId)
+      socket.emit('getUserOnline', userOnline)
     })
   })
 }
