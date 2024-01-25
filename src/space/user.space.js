@@ -1,4 +1,3 @@
-const User = require('../database/models/User.model')
 const AppError = require('../utils/AppError')
 const verifyToken = require('../utils/verifyToken')
 
@@ -26,12 +25,12 @@ module.exports = (io) => {
       clients.push(socketInformation)
     }
     socket.on('users online', () => {
-      const usersOnline = clients.filter((client) => client.userId !== socketInformation.userId)
-      socket.emit('users online', usersOnline)
+      socket.emit('users online', clients)
     })
-    socket.on('getUserOnline', (userId) => {
-      const userOnline = clients.find((client) => client.userId === userId)
-      socket.emit('getUserOnline', userOnline)
+    socket.on('isUserOnline', (userId) => {
+      const isUserOnline = clients.some((client) => client.userId === userId)
+      console.log('isUserOnlien ', isUserOnline, ' id ', userId)
+      socket.emit('isUserOnline', isUserOnline)
     })
   })
 }
