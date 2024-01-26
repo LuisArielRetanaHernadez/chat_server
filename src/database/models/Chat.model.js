@@ -1,18 +1,26 @@
 const mongoose = require('mongoose')
 
 const chatSchema = new mongoose.Schema({
-  Content: {
+  name: {
     type: String,
     required: true
   },
-  IDUser: {
+  userIds: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
+  }],
+  messagesIds: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Menssage'
+  }],
+  isGroup: {
+    type: Boolean,
+    default: false
   },
-  IDContact: {
+  administrators: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
-  },
+  }],
   CreatAt: {
     type: Date,
     default: Date.now
