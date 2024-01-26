@@ -10,6 +10,14 @@ const menssageSchema = new mongoose.Schema({
     ref: 'Users',
     required: true
   },
+  seendIds: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Users'
+  }],
+  IDChat: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Chat'
+  },
   createDate: {
     type: Date,
     required: true
