@@ -29,7 +29,6 @@ module.exports = (io) => {
     })
     socket.on('isUserOnline', (userId) => {
       const isUserOnline = clients.some((client) => client.userId === userId)
-      console.log('isUserOnlien ', isUserOnline, ' id ', userId)
       socket.emit('isUserOnline', isUserOnline)
     })
   })
