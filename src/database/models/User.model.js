@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  isOnline: {
+    type: Boolean,
+    default: false
+  },
   Contacts: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
