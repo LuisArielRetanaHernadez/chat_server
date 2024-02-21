@@ -62,6 +62,9 @@ exports.login = tryCathc(async (req, res, next) => {
 
   user.Password = undefined
 
+  // actualizar el campo isOnline a true
+  await user.updateOne({ isOnline: true })
+
   return res.status(200).json({
     message: 'user login',
     data: {
