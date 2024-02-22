@@ -1,3 +1,5 @@
+const { sendMessage } = require("../events/sendMessage.event")
+
 module.exports = (io) => {
   const clients = []
   io.of('/users').on('connection', (socket) => {
@@ -13,6 +15,10 @@ module.exports = (io) => {
     socket.on('isUserOnline', (userId) => {
       const isUserOnline = clients.some((client) => client.userId === userId)
       socket.emit('isUserOnline', isUserOnline)
+    })
+
+    socket.on('send message', (message) => {
+      sendMessage(message, socket)
     })
   })
 }
