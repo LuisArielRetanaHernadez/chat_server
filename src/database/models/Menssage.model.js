@@ -5,18 +5,10 @@ const menssageSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  IDUser: {
+  authID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users',
     required: true
-  },
-  seendIds: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Users'
-  }],
-  IDChat: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Chat'
   },
   createDate: {
     type: Date,
