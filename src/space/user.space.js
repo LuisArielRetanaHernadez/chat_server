@@ -5,7 +5,8 @@ module.exports = (io) => {
   const clients = []
   io.of('/users').on('connection', (socket) => {
     socket.on('users online', () => {
-      socket.emit('users online', clients)
+      const usersOnline = User.find({ isOnline: true })
+      socket.emit('users online', usersOnline)
     })
     socket.on('isUserOnline', (userId) => {
       const isUserOnline = clients.some((client) => client.userId === userId)
