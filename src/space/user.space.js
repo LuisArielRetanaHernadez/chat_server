@@ -16,9 +16,9 @@ module.exports = (io) => {
       sendMessage(message, socket)
     })
 
-    socket.on('disconnect', async () => {
-      socket.broadcast.emit('user disconnected', socket.id)
-      await User.updateOne({ _id: socket.id }, { isOnline: false })
-    })
+    // socket.on('disconnect', async () => {
+    //   socket.broadcast.emit('user disconnected', socket.id)
+    //   await User.updateOne({ _id: socket.id }, { isOnline: false })
+    // })
   })
 }
