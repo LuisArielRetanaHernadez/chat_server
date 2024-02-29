@@ -60,10 +60,12 @@ exports.login = tryCathc(async (req, res, next) => {
 
   const token = await jsonwebtoken.sign({ id: user._id }, process.env.JW_SECRET, { expiresIn: process.env.JWT_EXPIRE })
 
-  user.Password = undefined
-
   // actualizar el campo isOnline a true
   await user.updateOne({ isOnline: true })
+
+  await user.save()
+
+  user.Password = undefined
 
   return res.status(200).json({
     message: 'user login',
