@@ -7,8 +7,8 @@ module.exports = (io) => {
       const usersOnline = await User.find({ isOnline: true })
       socket.emit('users online', usersOnline)
     })
-    socket.on('isUserOnline', (userId) => {
-      const isUserOnline = User.findOne({ _id: userId, isOnline: true })
+    socket.on('isUserOnline', async (userId) => {
+      const isUserOnline = await User.findOne({ _id: userId, isOnline: true })
       socket.emit('isUserOnline', isUserOnline)
     })
 
