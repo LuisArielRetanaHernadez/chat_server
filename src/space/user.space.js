@@ -2,14 +2,13 @@ const User = require('../database/models/User.model')
 const { sendMessage } = require('../events/sendMessage.event')
 
 module.exports = (io) => {
-  const clients = []
   io.of('/users').on('connection', (socket) => {
-    socket.on('users online', () => {
-      const usersOnline = User.find({ isOnline: true })
+    socket.on('users online', async () => {
+      const usersOnline = await User.find({ isOnline: true })
       socket.emit('users online', usersOnline)
     })
     socket.on('isUserOnline', (userId) => {
-      const isUserOnline = clients.some((client) => client.userId === userId)
+      const isUserOnline = User.findOne({ _id: userId, isOnline: true })
       socket.emit('isUserOnline', isUserOnline)
     })
 
