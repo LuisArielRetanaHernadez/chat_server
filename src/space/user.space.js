@@ -1,5 +1,6 @@
 const User = require('../database/models/User.model')
-const { sendMessage } = require('../events/sendMessage.event')
+
+const clients = []
 
 module.exports = (io) => {
   io.of('/users').on('connection', (socket) => {
@@ -12,13 +13,9 @@ module.exports = (io) => {
       socket.emit('isUserOnline', isUserOnline)
     })
 
-    socket.on('send message', (message) => {
-      sendMessage(message, socket)
+    socket.on('send message', (data) => {
+      console.log(data)
+      socket.to(clients[0].socketID).emit('message', data)
     })
-
-    // socket.on('disconnect', async () => {
-    //   socket.broadcast.emit('user disconnected', socket.id)
-    //   await User.updateOne({ _id: socket.id }, { isOnline: false })
-    // })
   })
 }
