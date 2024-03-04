@@ -1,5 +1,6 @@
 const Chat = require('../database/models/Chat.model')
 const Menssage = require('../database/models/Menssage.model')
+const tryCathc = require('../utils/tryCathc')
 
 exports.saveMessage = async (req, res, next) => {
   const { message, isGroup } = req.body
@@ -41,3 +42,14 @@ exports.saveMessage = async (req, res, next) => {
     status: 'succes'
   })
 }
+
+exports.getMenssages = tryCathc(async (req, res, next) => {
+  const { id } = req.params
+  const { isGroup } = req.body
+  const chat = await Chat.findOne({ users: [req.user.id, id], isGroup })
+  return res.status(200).json({
+    message: 'get messages',
+    data: chat,
+    status: 'succes'
+  })
+})
