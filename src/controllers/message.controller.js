@@ -50,7 +50,7 @@ exports.getMenssages = tryCathc(async (req, res, next) => {
   if (!chat) {
     return res.status(404).json({
       message: 'chat not found',
-      status: 'error'
+      status: 'warning'
     })
   }
 
