@@ -36,9 +36,8 @@ exports.saveMessage = async (req, res, next) => {
   chat.messages.push(newMessage)
   await chat.save()
 
-  return res.status(201).json({
+  return res.status(202).json({
     message: 'send message',
-    data: chat,
     status: 'succes'
   })
 }
