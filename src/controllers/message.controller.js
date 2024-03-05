@@ -20,7 +20,7 @@ exports.saveMessage = async (req, res, next) => {
       isGroup: true,
       messagesIds: [newMessage]
     })
-    return res.status(203).json({
+    return res.status(204).json({
       message: 'send message',
       status: 'succes'
     })
@@ -31,7 +31,7 @@ exports.saveMessage = async (req, res, next) => {
   chat.messages.push(newMessage)
   await chat.save()
 
-  return res.status(203).json({
+  return res.status(204).json({
     message: 'send message',
     status: 'succes'
   })
