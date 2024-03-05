@@ -44,6 +44,9 @@ module.exports = (io) => {
       .then((id) => id)
       .catch((err) => next(err))
 
+    if (!user) {
+      return next(new AppError('user not found', 401))
+    }
     clients[user.id] = {
       socketID: socket.id,
       name: user.Name,
