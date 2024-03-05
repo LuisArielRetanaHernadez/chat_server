@@ -3,20 +3,20 @@ const Menssage = require('../database/models/Menssage.model')
 const tryCathc = require('../utils/tryCathc')
 
 exports.saveMessage = async (req, res, next) => {
-  const { message, isGroup } = req.body
+  const { message } = req.body
 
-  const newMessage = Menssage.create({
+  const newMessage = await Menssage.create({
     content: message,
     authID: req.userCurrent.id,
     createDate: new Date()
   })
 
-  const chat = await Chat.findOne({ users: [req.user.id, req.body.id], isGroup })
+  const chat = await Chat.findOne({ users: [req.userCurrent.id, req.body.id] })
 
   if (!chat) {
     await Chat.create({
       name: 'not name',
-      users: [req.user.id, req.body.id],
+      users: [req.userCurrent.id, req.body.id],
       isGroup: true,
       messagesIds: [newMessage]
     })
@@ -39,7 +39,8 @@ exports.saveMessage = async (req, res, next) => {
 
 exports.getMenssages = tryCathc(async (req, res, next) => {
   const { id } = req.params
-  const chat = await Chat.findOne({ users: [req.userCurrent.id, id], isGroup: false })
+
+  const chat = await Chat.findOne({ users: [req.userCurrent.id, id], isGroup: true })
     .populate('messagesIds')
 
   if (!chat) {
