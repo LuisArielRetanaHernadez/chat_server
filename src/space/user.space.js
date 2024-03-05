@@ -8,13 +8,13 @@ const verifyConnect = async (socket) => {
   const token = socket.handshake.query.key
 
   if (!token) {
-    throw new AppError('token invalid', 404)
+    throw new AppError('token invalid', 401)
   }
 
   const decoded = jwt.verify(token, process.env.JW_SECRET, (err, decoded) => {
     if (err) {
       console.log(err)
-      throw new AppError('token invalid', 404)
+      throw new AppError('token invalid', 401)
     }
 
     return decoded
@@ -23,8 +23,9 @@ const verifyConnect = async (socket) => {
   const user = await User.findOne({ _id: decoded.id }, { Username: 1, Name: 1, LastName: 1 })
 
   if (!user) {
-    throw new AppError('user not found', 404)
+    throw new AppError('user not found', 401)
   }
+
   if (user) {
     return {
       id: decoded.id,
@@ -42,8 +43,6 @@ module.exports = (io) => {
     const user = await verifyConnect(socket)
       .then((id) => id)
       .catch((err) => next(err))
-
-    if (!user) return next(new AppError('user not found', 404))
 
     clients[user.id] = {
       socketID: socket.id,
