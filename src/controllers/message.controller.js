@@ -7,26 +7,21 @@ exports.saveMessage = async (req, res, next) => {
 
   const newMessage = Menssage.create({
     content: message,
-    authID: req.user.id,
+    authID: req.userCurrent.id,
     createDate: new Date()
   })
-  /*
-    comprobare si existe un chat individual entre los usuarios
-    por lo cual el campo users debe tener 2 usuarios y los id de los
-    usuarios del chat
-  */
+
   const chat = await Chat.findOne({ users: [req.user.id, req.body.id], isGroup })
 
   if (!chat) {
-    const newChat = Chat.create({
+    await Chat.create({
       name: 'not name',
       users: [req.user.id, req.body.id],
       isGroup: true,
       messagesIds: [newMessage]
     })
-    return res.status(201).json({
+    return res.status(203).json({
       message: 'send message',
-      data: newChat,
       status: 'succes'
     })
   }
@@ -36,7 +31,7 @@ exports.saveMessage = async (req, res, next) => {
   chat.messages.push(newMessage)
   await chat.save()
 
-  return res.status(202).json({
+  return res.status(203).json({
     message: 'send message',
     status: 'succes'
   })
