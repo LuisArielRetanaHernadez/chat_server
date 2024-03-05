@@ -46,6 +46,15 @@ exports.getMenssages = tryCathc(async (req, res, next) => {
   const { id } = req.params
   const { isGroup } = req.body
   const chat = await Chat.findOne({ users: [req.user.id, id], isGroup })
+    .populate('messagesIds')
+
+  if (!chat) {
+    return res.status(404).json({
+      message: 'chat not found',
+      status: 'error'
+    })
+  }
+
   return res.status(200).json({
     message: 'get messages',
     data: chat,
