@@ -3,7 +3,7 @@ const AppError = require('../../../utils/AppError')
 
 exports.userMiddleware = {
   'send message': async (socket, data, next) => {
-    const token = socket.handshake.query.token
+    const token = socket.handshake.query.key
     if (!token) {
       return next(new AppError('no token', 404))
     }
