@@ -44,13 +44,13 @@ module.exports = (io) => {
       .catch((err) => next(err))
 
     if (!user) return next(new AppError('user not found', 404))
-    clients[user] = {
-      socketID: user,
+    clients[user.id] = {
+      socketID: socket.id,
       name: user.Name,
       lastName: user.LastName,
       username: user.Username
     }
-
+    socket.userID = user.id
     next()
   })
   io.of('/users').on('connection', (socket) => {
@@ -68,7 +68,7 @@ module.exports = (io) => {
       socket.to(clients[data.to].socketID).emit('message', {
         message: data.message,
         to: data.to,
-        username: clients[data.to].username
+        username: clients[socket.userID].username
       })
     })
   })
