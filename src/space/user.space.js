@@ -20,13 +20,20 @@ const verifyConnect = async (socket) => {
     return decoded
   })
 
-  const user = await User.exists({ _id: decoded.id })
+  const user = await User.findOne({ _id: decoded.id }, { Username: 1, Name: 1, LastName: 1 })
 
   if (!user) {
     throw new AppError('user not found', 404)
   }
 
-  if (user) return decoded.id
+  if (user) {
+    return {
+      id: decoded.id,
+      Username: user.Username,
+      Name: user.Name,
+      LastName: user.LastName
+    }
+  }
   return null
 }
 
@@ -37,7 +44,12 @@ module.exports = (io) => {
       .catch((err) => next(err))
 
     if (!user) return next(new AppError('user not found', 404))
-    clients[user] = socket.id
+    clients[user] = {
+      socketID: user,
+      name: user.Name,
+      lastName: user.LastName,
+      username: user.Username
+    }
 
     next()
   })
@@ -52,8 +64,12 @@ module.exports = (io) => {
     })
 
     socket.on('send message', (data) => {
-      console.log(clients[data.to])
-      socket.to(clients[data.to]).emit('message', data)
+      console.log(clients[data.to].socketID)
+      socket.to(clients[data.to].socketID).emit('message', {
+        message: data.message,
+        to: data.to,
+        username: clients[data.to].username
+      })
     })
   })
 }
