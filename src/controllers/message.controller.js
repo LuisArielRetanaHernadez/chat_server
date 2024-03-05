@@ -44,8 +44,7 @@ exports.saveMessage = async (req, res, next) => {
 
 exports.getMenssages = tryCathc(async (req, res, next) => {
   const { id } = req.params
-  const { isGroup } = req.body
-  const chat = await Chat.findOne({ users: [req.user.id, id], isGroup })
+  const chat = await Chat.findOne({ users: [req.userCurrent.id, id], isGroup: false })
     .populate('messagesIds')
 
   if (!chat) {
