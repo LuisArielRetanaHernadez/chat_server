@@ -46,13 +46,13 @@ exports.register = tryCathc(async (req, res, next) => {
 exports.login = tryCathc(async (req, res, next) => {
   const { email, password } = req.body
 
-  const user = await User.findOne({ Email: email })
+  const user = await User.findOne({ email })
 
   if (!user) {
     return next(new AppError('invalide crendetials', 401))
   }
 
-  const isMatch = await bcrypt.compare(password, user.Password)
+  const isMatch = await bcrypt.compare(password, user.password)
 
   if (!isMatch) {
     return next(new AppError('invalide crendetials', 401))
@@ -65,7 +65,7 @@ exports.login = tryCathc(async (req, res, next) => {
 
   await user.save()
 
-  user.Password = undefined
+  user.password = undefined
 
   return res.status(200).json({
     message: 'user login',
