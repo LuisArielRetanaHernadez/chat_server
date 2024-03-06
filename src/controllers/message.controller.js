@@ -51,7 +51,9 @@ exports.getMenssages = tryCathc(async (req, res, next) => {
 
   return res.status(200).json({
     message: 'get messages',
-    data: chat,
+    data: {
+      messages: chat.messages
+    },
     status: 'succes'
   })
 })
