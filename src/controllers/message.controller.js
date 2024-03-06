@@ -5,7 +5,7 @@ const tryCathc = require('../utils/tryCathc')
 exports.saveMessage = async (req, res, next) => {
   const { message } = req.body
 
-  const newMessage = await Menssage.create({
+  const newMessage = await Message.create({
     content: message,
     authID: req.userCurrent.id,
     createDate: new Date()
@@ -41,7 +41,7 @@ exports.getMenssages = tryCathc(async (req, res, next) => {
   const { id } = req.params
 
   const chat = await Chat.findOne({ users: [req.userCurrent.id, id], isGroup: true })
-    .populate('messagesIds')
+    .populate('messages')
 
   if (!chat) {
     return res.status(404).json({
