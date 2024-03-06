@@ -89,6 +89,12 @@ exports.searchUsers = tryCathc(async (req, res, next) => {
     ]
   }).select('-Password')
 
+  if (!usersFind) {
+    return res.status(200).json({
+      message: 'no users found'
+    })
+  }
+
   return res.status(200).json({
     message: 'search users',
     data: {
