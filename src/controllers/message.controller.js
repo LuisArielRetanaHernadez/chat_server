@@ -17,7 +17,7 @@ exports.saveMessage = async (req, res, next) => {
     await Chat.create({
       name: 'not name',
       users: [req.userCurrent.id, req.body.id],
-      messagesIds: [newMessage]
+      messages: [newMessage]
     })
     return res.status(204).json({
       message: 'send message',
