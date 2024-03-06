@@ -40,8 +40,15 @@ exports.getMenssages = tryCathc(async (req, res, next) => {
   const { id } = req.params
 
   const chat = await Chat.findOne({ users: [req.userCurrent.id, id] })
-    .populate('messages')
-
+    .populate({
+      path: 'messages',
+      model: 'Messages',
+      populate: {
+        path: 'authID',
+        model: 'Users',
+        select: ['Username', 'username']
+      }
+    })
   if (!chat) {
     return res.status(404).json({
       message: 'chat not found',
