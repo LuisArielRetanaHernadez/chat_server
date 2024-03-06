@@ -1,5 +1,5 @@
 const Chat = require('../database/models/Chat.model')
-const Menssage = require('../database/models/Menssage.model')
+const Message = require('../database/models/Menssage.model')
 const tryCathc = require('../utils/tryCathc')
 
 exports.saveMessage = async (req, res, next) => {
