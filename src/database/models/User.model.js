@@ -1,27 +1,27 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-  Name: {
+  name: {
     type: String,
     required: true
   },
-  LastName: {
+  lastName: {
     type: String,
     required: true
   },
-  Age: {
+  age: {
     type: Number,
     required: true
   },
-  Email: {
+  email: {
     type: String,
     required: true
   },
-  Password: {
+  password: {
     type: String,
     required: true
   },
-  Username: {
+  username: {
     type: String,
     required: false
   },
@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  Contacts: [{
+  contacts: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
   }]
