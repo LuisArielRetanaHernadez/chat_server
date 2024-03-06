@@ -7,7 +7,7 @@ exports.saveMessage = async (req, res, next) => {
 
   const newMessage = await Message.create({
     content: message,
-    authID: req.userCurrent.id,
+    author: req.userCurrent.id,
     createDate: new Date()
   })
 
