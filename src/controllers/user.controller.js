@@ -7,20 +7,20 @@ const jsonwebtoken = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 exports.register = tryCathc(async (req, res, next) => {
-  const { Email } = req.body
+  const { email } = req.body
 
-  const userFind = await User.findOne({ Email })
+  const userFind = await User.findOne({ email })
 
   if (userFind) {
     return next(new AppError('is email register', 401))
   }
 
   const salt = await bcrypt.genSalt(8)
-  const passwordHash = await bcrypt.hash(req.body.Password, salt)
+  const passwordHash = await bcrypt.hash(req.body.password, salt)
 
   const dataDisinfect = {
     ...req.body,
-    Password: passwordHash,
+    password: passwordHash,
     PasswordConfirm: undefined
   }
 
@@ -32,7 +32,7 @@ exports.register = tryCathc(async (req, res, next) => {
     return next(new AppError('error create user', 401))
   }
 
-  delete user.Password
+  delete user.password
 
   return res.status(201).json({
     message: 'user created',
@@ -83,9 +83,9 @@ exports.searchUsers = tryCathc(async (req, res, next) => {
 
   const usersFind = await User.find({
     $or: [
-      { Name: { $regex: user, $options: 'i' } },
-      { Email: { $regex: user, $options: 'i' } },
-      { Username: { $regex: user, $options: 'i' } }
+      { name: { $regex: user, $options: 'i' } },
+      { email: { $regex: user, $options: 'i' } },
+      { username: { $regex: user, $options: 'i' } }
     ]
   }).select('-Password')
 
