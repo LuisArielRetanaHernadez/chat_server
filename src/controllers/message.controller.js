@@ -44,7 +44,7 @@ exports.getMenssages = tryCathc(async (req, res, next) => {
       path: 'messages',
       model: 'Messages',
       populate: {
-        path: 'authID',
+        path: 'auth',
         model: 'Users',
         select: ['Username', 'username']
       }
