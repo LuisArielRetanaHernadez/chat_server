@@ -5,7 +5,7 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  auth: {
+  author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users',
     required: true
