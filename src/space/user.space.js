@@ -20,7 +20,7 @@ const verifyConnect = async (socket) => {
     return decoded
   })
 
-  const user = await User.findOne({ _id: decoded.id }, { username: 1, name: 1, lastName: 1 })
+  const user = await User.findOne({ _id: decoded.id, isOnline: true }, { username: 1, name: 1, lastName: 1 })
 
   if (!user) {
     throw new AppError('user not found', 401)
