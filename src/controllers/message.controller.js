@@ -11,7 +11,11 @@ exports.saveMessage = async (req, res, next) => {
     createDate: new Date()
   })
 
-  const chat = await Chat.findOne({ users: [req.userCurrent.id, req.body.id] })
+  const chat = await Chat.findOne({
+    users: {
+      $all: [req.userCurrent.id, req.body.id]
+    }
+  })
 
   if (!chat) {
     await Chat.create({
@@ -43,6 +47,7 @@ exports.getMenssages = tryCathc(async (req, res, next) => {
     .populate({
       path: 'messages',
       model: 'Messages',
+      select: ['content', 'author'],
       populate: {
         path: 'author',
         model: 'Users',
