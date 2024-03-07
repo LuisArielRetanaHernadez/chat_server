@@ -79,8 +79,9 @@ module.exports = (io) => {
       })
     })
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', async () => {
       delete clients[socket.userID]
+      await User.findByIdAndUpdate(socket.userID, { isOnline: false })
       socket.broadcast.emit('users online', clients)
     })
   })
