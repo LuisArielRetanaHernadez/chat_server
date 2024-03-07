@@ -47,6 +47,9 @@ module.exports = (io) => {
     if (!user) {
       return next(new AppError('user not found', 401))
     }
+    if (clients[user.id]) {
+      return next()
+    }
     clients[user.id] = {
       socketID: socket.id,
       name: user.name,
