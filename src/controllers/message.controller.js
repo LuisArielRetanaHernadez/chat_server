@@ -43,7 +43,11 @@ exports.saveMessage = async (req, res, next) => {
 exports.getMenssages = tryCathc(async (req, res, next) => {
   const { id } = req.params
 
-  const chat = await Chat.findOne({ users: [req.userCurrent.id, id] })
+  const chat = await Chat.findOne({
+    users: {
+      $all: [req.userCurrent.id, id]
+    }
+  })
     .populate({
       path: 'messages',
       model: 'Messages',
