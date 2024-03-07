@@ -78,5 +78,10 @@ module.exports = (io) => {
         username: clients[socket.userID].username
       })
     })
+
+    socket.on('disconnect', () => {
+      delete clients[socket.userID]
+      socket.broadcast.emit('users online', clients)
+    })
   })
 }
