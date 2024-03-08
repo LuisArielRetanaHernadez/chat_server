@@ -10,7 +10,7 @@ const { auth } = require('../middlewares/auth.middleware')
 
 const router = express.Router()
 
-router.post('/', validate(registerUser), register)
+router.post('/register', validate(registerUser), register)
 router.post('/login', validate(loginUser), login)
 router.get('/search', auth, searchUsers)
 router.put('/addContact/:id', auth, addContact)
