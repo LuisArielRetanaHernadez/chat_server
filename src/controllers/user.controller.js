@@ -32,12 +32,15 @@ exports.register = tryCathc(async (req, res, next) => {
     return next(new AppError('error create user', 401))
   }
 
+  const token = await jsonwebtoken.sign({ id: user._id }, process.env.JW_SECRET, { expiresIn: process.env.JWT_EXPIRE })
+
   delete user.password
 
   return res.status(201).json({
     message: 'user created',
     data: {
-      user
+      user,
+      token
     },
     status: 'success'
   })
