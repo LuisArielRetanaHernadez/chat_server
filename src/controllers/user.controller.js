@@ -139,3 +139,20 @@ exports.addContact = tryCathc(async (req, res, next) => {
     }
   })
 })
+
+exports.getContacts = tryCathc(async (req, res, next) => {
+  const { userCurrent } = req
+
+  const contacts = await User.find({ _id: userCurrent._id }).select('contacts')
+
+  if (!contacts) {
+    return next(new AppError('error get contacts', 401))
+  }
+
+  return res.status(200).json({
+    message: 'get contacts',
+    data: {
+      contacts
+    }
+  })
+})
