@@ -7,6 +7,7 @@ const validate = require('../middlewares/validate.middleware')
 // controller
 const { register, login, searchUsers, addContact, getContacts, getContact } = require('../controllers/user.controller')
 const { auth } = require('../middlewares/auth.middleware')
+const { existContact } = require('../middlewares/existContact.middleware')
 
 const router = express.Router()
 
@@ -18,6 +19,6 @@ router.get('/search', auth, searchUsers)
 // contacts
 router.put('/addContact/:id', auth, addContact)
 router.get('/contacts/:id', auth, getContact)
-router.get('/contacts', auth, getContacts)
+router.get('/contacts', auth, existContact(false), getContacts)
 
 module.exports = { routerUser: router }
