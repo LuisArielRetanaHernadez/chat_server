@@ -152,6 +152,10 @@ exports.addContact = tryCathc(async (req, res, next) => {
   const { userCurrent } = req
   const { id } = req.params
 
+  if (userCurrent.id === id) {
+    return next(new AppError('error add contact', 401))
+  }
+
   const existUser = await User.findOne({ id: id })
 
   if (!existUser) {
