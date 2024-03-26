@@ -80,6 +80,38 @@ exports.login = tryCathc(async (req, res, next) => {
   })
 })
 
+exports.getUser = tryCathc(async (req, res, next) => {
+  const { userCurrent } = req
+  const { id } = req.params
+
+  const user = await User.findOne({ _id: id })
+    .select('-Password')
+
+  if (!user === null) {
+    return next(new AppError('user not found', 401))
+  }
+
+  const isContact = await User.exists({ _id: userCurrent.id, contacts: id })
+
+  if (!user) {
+    return res.status(200).json({
+      message: 'user found',
+      data: {
+        user,
+        isContact
+      }
+    })
+  }
+
+  return res.status(200).json({
+    message: 'user found',
+    data: {
+      user,
+      isContact
+    }
+  })
+})
+
 exports.searchUsers = tryCathc(async (req, res, next) => {
   const { user } = req.query
   console.log('user: ', req.query)
