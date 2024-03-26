@@ -5,7 +5,6 @@ const tryCathc = require('../utils/tryCathc')
 const jsonwebtoken = require('jsonwebtoken')
 
 const bcrypt = require('bcrypt')
-const { default: mongoose } = require('mongoose')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { email } = req.body
