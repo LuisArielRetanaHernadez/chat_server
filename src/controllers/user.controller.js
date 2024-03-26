@@ -5,6 +5,7 @@ const tryCathc = require('../utils/tryCathc')
 const jsonwebtoken = require('jsonwebtoken')
 
 const bcrypt = require('bcrypt')
+const { default: mongoose } = require('mongoose')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { email } = req.body
@@ -107,39 +108,6 @@ exports.searchUsers = tryCathc(async (req, res, next) => {
   })
 })
 
-exports.addContact = tryCathc(async (req, res, next) => {
-  const { userCurrent } = req
-  const { id } = req.params
-
-  // if contact exist on database
-  const isContact = User.find({
-    $and: [
-      { _id: userCurrent._id },
-      { Contacts: { $elemMatch: { id } } }
-    ]
-  })
-
-  if (isContact) {
-    return next(new AppError('contact exist', 401))
-  }
-
-  const addContact = await User.updateOne(
-    { _id: userCurrent._id },
-    { $push: { Contacts: { id } } }
-  )
-
-  if (!addContact) {
-    return next(new AppError('error add contact', 401))
-  }
-
-  return res.status(200).json({
-    message: 'add contact',
-    data: {
-      addContact
-    }
-  })
-})
-
 exports.getContacts = tryCathc(async (req, res, next) => {
   const { userCurrent } = req
 
@@ -185,14 +153,7 @@ exports.addContact = tryCathc(async (req, res, next) => {
   const { userCurrent } = req
   const { id } = req.params
 
-  const existContact = await User.findOne({ _id: userCurrent._id, 'contacts._id': id })
-    .select('contacts')
-
-  if (existContact) {
-    return next(new AppError('contact exist', 401))
-  }
-
-  const existUser = await User.findOne({ _id: id })
+  const existUser = await User.findOne({ id: id })
 
   if (!existUser) {
     return next(new AppError('user does not exist', 401))
