@@ -91,14 +91,16 @@ exports.getUser = tryCathc(async (req, res, next) => {
     return next(new AppError('user not found', 401))
   }
 
-  const isContact = await User.exists({ _id: userCurrent.id, contacts: id })
+  const isContact = await User.find({
+    _id: userCurrent.id
+  }).in('contacts', id)
 
   if (!user) {
     return res.status(200).json({
       message: 'user found',
       data: {
         user,
-        isContact
+        isContact: isContact !== null
       }
     })
   }
@@ -107,7 +109,7 @@ exports.getUser = tryCathc(async (req, res, next) => {
     message: 'user found',
     data: {
       user,
-      isContact
+      isContact: isContact !== null
     }
   })
 })
