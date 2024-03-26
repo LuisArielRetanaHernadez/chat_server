@@ -12,12 +12,10 @@ exports.existContact = (isPass = false) => {
       'contacts._id': userCurrent._id
     }).select('contacts')
 
-    if (!isContact) {
-      if (isPass) {
-        return next()
+    if (!isPass) {
+      if (isContact === null) {
+        return next(new AppError('contact does not exist', 401))
       }
-
-      return next(new AppError('contact does not exist', 401))
     }
 
     return next()
