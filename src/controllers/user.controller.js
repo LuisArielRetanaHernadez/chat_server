@@ -110,10 +110,18 @@ exports.searchUsers = tryCathc(async (req, res, next) => {
 exports.getContacts = tryCathc(async (req, res, next) => {
   const { userCurrent } = req
 
-  const contacts = await User.find({ _id: userCurrent._id }).select('contacts')
+  const contacts = await User.find({ _id: userCurrent.id })
+    .select('contacts')
+    .populate('contacts')
 
-  if (!contacts) {
+  if (!contacts && contacts !== null) {
     return next(new AppError('error get contacts', 401))
+  }
+
+  if (contacts === null) {
+    return res.status(200).json({
+      message: 'no found contacts'
+    })
   }
 
   return res.status(200).json({
