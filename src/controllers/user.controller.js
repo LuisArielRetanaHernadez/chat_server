@@ -128,7 +128,15 @@ exports.getContact = tryCathc(async (req, res, next) => {
   const { userCurrent } = req
   const { id } = req.params
 
-  const contact = await User.findOne({ _id: userCurrent._id, 'contacts._id': id }).select('contacts')
+  const existUser = await User.findOne({ _id: id })
+
+  if (existUser === null) {
+    return next(new AppError('user does not exist', 401))
+  }
+
+  const contact = await User.findOne({ _id: userCurrent.id, contacts: id })
+    .select('contacts')
+    .populate('contacts')
 
   if (contact === null) {
     return res.status(200).json({
