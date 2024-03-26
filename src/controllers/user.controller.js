@@ -163,6 +163,12 @@ exports.getContact = tryCathc(async (req, res, next) => {
 
   const contact = await User.findOne({ _id: userCurrent._id, 'contacts._id': id }).select('contacts')
 
+  if (contact === null) {
+    return res.status(200).json({
+      message: 'no found contact'
+    })
+  }
+
   if (!contact) {
     return next(new AppError('error get contact', 401))
   }
