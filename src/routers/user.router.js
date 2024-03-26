@@ -17,7 +17,7 @@ router.post('/login', validate(loginUser), login)
 // search users
 router.get('/search', auth, searchUsers)
 // contacts
-router.put('/addContact/:id', auth, addContact)
+router.put('/addContact/:id', auth, existContact(false), addContact)
 router.get('/contacts/:id', auth, getContact)
 router.get('/contacts', auth, existContact(false), getContacts)
 
