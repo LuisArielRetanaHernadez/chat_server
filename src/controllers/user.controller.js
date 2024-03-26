@@ -156,20 +156,21 @@ exports.addContact = tryCathc(async (req, res, next) => {
     return next(new AppError('error add contact', 401))
   }
 
-  const existUser = await User.findOne({ id: id })
+  const existUser = await User.findOne({ _id: id })
 
   if (!existUser) {
     return next(new AppError('user does not exist', 401))
   }
 
-  const addContact = await User.updateOne(
-    { _id: userCurrent._id },
-    { $push: { Contacts: { id } } }
-  )
+  const addContact = await User.findOne({ _id: userCurrent.id })
+
+  addContact.contacts.push({ _id: id })
 
   if (!addContact) {
     return next(new AppError('error add contact', 401))
   }
+
+  await addContact.save()
 
   return res.status(200).json({
     message: 'add contact',
