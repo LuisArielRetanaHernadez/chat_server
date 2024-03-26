@@ -17,6 +17,7 @@ router.post('/login', validate(loginUser), login)
 router.get('/search', auth, searchUsers)
 // contacts
 router.put('/addContact/:id', auth, addContact)
+router.get('/contacts/:id', auth, getContacts)
 router.get('/contacts', auth, getContacts)
 
 module.exports = { routerUser: router }
