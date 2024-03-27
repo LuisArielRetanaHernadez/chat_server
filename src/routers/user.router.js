@@ -14,9 +14,8 @@ const router = express.Router()
 // user
 router.post('/register', validate(registerUser), register)
 router.post('/login', validate(loginUser), login)
-router.get('/:id', auth, getUser)
-// search users
 router.get('/search', auth, searchUsers)
+router.get('/:id', auth, getUser)
 // contacts
 router.put('/addContact/:id', auth, existContact(false), addContact)
 router.get('/contacts/:id', auth, getContact)
