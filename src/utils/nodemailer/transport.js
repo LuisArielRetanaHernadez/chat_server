@@ -15,11 +15,11 @@ if (process.env.NODE_ENV !== 'development') {
 
 if (process.env.NODE_ENV === 'production') {
   transport = nodemialer.createTransport({
-    host: 'smtp.sendgrid.net',
-    port: 587,
+    host: process.env.HOST,
+    port: process.env.PORT,
     auth: {
-      user: 'apikey',
-      pass: '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'
+      user: process.env.USER,
+      pass: process.env.PASS
     }
   })
 }
