@@ -6,7 +6,7 @@ exports.getContacts = tryCathc(async (req, res, next) => {
   const { userCurrent } = req
 
   const contacts = await User.find({ _id: userCurrent.id })
-    .select('contacts')
+    .select('contacts -_id')
     .populate('contacts')
 
   if (!contacts && contacts !== null) {
@@ -22,7 +22,7 @@ exports.getContacts = tryCathc(async (req, res, next) => {
   return res.status(200).json({
     message: 'get contacts',
     data: {
-      contacts
+      contacts: contacts[0]
     }
   })
 })
