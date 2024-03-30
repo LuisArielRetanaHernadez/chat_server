@@ -9,6 +9,7 @@ const globalError = require('./src/middlewares/errors.middleware')
 
 // cors
 const cors = require('cors')
+const { routerContact } = require('./src/routers/contacts.routers')
 
 const app = express()
 
@@ -18,6 +19,7 @@ app.use(cors())
 
 app.use('/api/v1/users', routerUser)
 app.use('/api/v1/messages', routerMessage)
+app.use('/api/v1/contacts', routerContact)
 app.use(globalError)
 
 module.exports = app
