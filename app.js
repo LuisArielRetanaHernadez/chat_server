@@ -3,13 +3,12 @@ const express = require('express')
 // routers
 const { routerUser } = require('./src/routers/user.router')
 const { routerMessage } = require('./src/routers/message.router')
-
+const { routerContact } = require('./src/routers/contacts.routers')
 // middlewares
 const globalError = require('./src/middlewares/errors.middleware')
 
 // cors
 const cors = require('cors')
-const { routerContact } = require('./src/routers/contacts.routers')
 
 const app = express()
 
