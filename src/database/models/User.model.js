@@ -32,7 +32,19 @@ const userSchema = new mongoose.Schema({
   contacts: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
-  }]
+  }],
+  status: {
+    type: String,
+    default: 'pending'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updateAt: {
+    type: Date,
+    default: Date.now
+  }
 })
 
 const User = mongoose.model('Users', userSchema)
