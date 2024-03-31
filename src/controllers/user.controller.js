@@ -40,6 +40,10 @@ exports.register = tryCathc(async (req, res, next) => {
     token
   })
 
+  if (!verifyEmail) {
+    return next(new AppError('error create user', 401))
+  }
+
   delete user.password
 
   return res.status(201).json({
@@ -81,6 +85,40 @@ exports.login = tryCathc(async (req, res, next) => {
     data: {
       user,
       token
+    },
+    status: 'success'
+  })
+})
+
+exports.checkEmail = tryCathc(async (req, res, next) => {
+  const { token } = req.params
+
+  const verifyToken = await jsonwebtoken.verify(token, process.env.JW_SECRET)
+
+  if (!verifyToken) {
+    return next(new AppError('token invalid', 401))
+  }
+
+  const checkEmail = await CheckEmail.findOne({ token, status: 'pending' })
+
+  if (!checkEmail) {
+    return next(new AppError('token invalid', 401))
+  }
+
+  const user = await User.findOne({ email: checkEmail.email })
+
+  if (!user) {
+    return next(new AppError('user not found', 401))
+  }
+
+  await user.updateOne({ isVerified: true })
+
+  await user.save()
+
+  return res.status(200).json({
+    message: 'email verified',
+    data: {
+      user
     },
     status: 'success'
   })
