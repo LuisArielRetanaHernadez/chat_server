@@ -9,6 +9,15 @@ const checkEmailSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  status: {
+    type: String,
+    default: 'pending'
+  },
+  expiresAt: {
+    type: Date,
+    default: Date.now,
+    expires: 3600
+  },
   createdAt: {
     type: Date,
     default: Date.now,
