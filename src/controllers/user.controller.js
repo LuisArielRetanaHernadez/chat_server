@@ -5,6 +5,7 @@ const tryCathc = require('../utils/tryCathc')
 const jsonwebtoken = require('jsonwebtoken')
 
 const bcrypt = require('bcrypt')
+const CheckEmail = require('../database/models/CheckEmail.model')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { email } = req.body
@@ -32,7 +33,12 @@ exports.register = tryCathc(async (req, res, next) => {
     return next(new AppError('error create user', 401))
   }
 
-  const token = await jsonwebtoken.sign({ id: user._id }, process.env.JW_SECRET, { expiresIn: process.env.JWT_EXPIRE })
+  const token = await jsonwebtoken.sign({ id: user._id }, process.env.JW_SECRET, { expiresIn: '1h' })
+
+  const verifyEmail = await CheckEmail.create({
+    email,
+    token
+  })
 
   delete user.password
 
@@ -40,7 +46,7 @@ exports.register = tryCathc(async (req, res, next) => {
     message: 'user created',
     data: {
       user,
-      token
+      url: `http://localhost:5173/email/verify/${token}`
     },
     status: 'success'
   })
