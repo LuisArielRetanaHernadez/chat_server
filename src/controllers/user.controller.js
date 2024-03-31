@@ -37,9 +37,11 @@ exports.register = tryCathc(async (req, res, next) => {
   const token = await jsonwebtoken.sign({ id: user._id }, process.env.JW_SECRET, { expiresIn: '1h' })
   const code = arrayDeBytesgenerateCode()
 
+  const codeCrypt = await bcrypt.hash(code, salt)
+
   const verifyEmail = await CheckEmail.create({
     email,
-    code,
+    code: codeCrypt,
     token
   })
 
