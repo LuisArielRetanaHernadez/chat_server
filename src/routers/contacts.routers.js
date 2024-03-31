@@ -7,7 +7,7 @@ const express = require('express')
 const router = express.Router()
 
 // contacts
-router.get('/', auth, existContact(false), getContacts)
+router.get('/', auth, getContacts)
 router.put('/add/:id', auth, existContact(false), addContact)
 router.get('/contacts/:id', auth, getContact)
 
