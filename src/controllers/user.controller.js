@@ -6,6 +6,7 @@ const jsonwebtoken = require('jsonwebtoken')
 
 const bcrypt = require('bcrypt')
 const CheckEmail = require('../database/models/CheckEmail.model')
+const { arrayDeBytesgenerateCode } = require('../utils/generateCode')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { email } = req.body
@@ -34,9 +35,11 @@ exports.register = tryCathc(async (req, res, next) => {
   }
 
   const token = await jsonwebtoken.sign({ id: user._id }, process.env.JW_SECRET, { expiresIn: '1h' })
+  const code = arrayDeBytesgenerateCode()
 
   const verifyEmail = await CheckEmail.create({
     email,
+    code,
     token
   })
 
