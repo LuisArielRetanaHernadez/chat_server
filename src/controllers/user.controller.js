@@ -7,6 +7,7 @@ const jsonwebtoken = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const CheckEmail = require('../database/models/CheckEmail.model')
 const { arrayDeBytesgenerateCode } = require('../utils/generateCode')
+const { default: sendEmail } = require('../utils/email/sendEmail')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { email } = req.body
@@ -52,10 +53,11 @@ exports.register = tryCathc(async (req, res, next) => {
 
   delete user.password
 
+  sendEmail('regalomessi10@gmail.com', 'regalomessi10@gmail.com', { code }, 'verifyEmail')
+
   return res.status(201).json({
     message: 'user created',
     data: {
-      user,
       url: `http://localhost:5173/email/verify/${token}`
     },
     status: 'success'
@@ -129,11 +131,9 @@ exports.checkEmail = tryCathc(async (req, res, next) => {
   }
 
   await user.updateOne({ status: 'active' })
-
   await user.save()
 
   await CheckEmail.deleteMany({ email: checkEmail.email, status: 'pending' })
-
   await User.deleteMany({ email: checkEmail.email, status: 'pending' })
 
   return res.status(200).json({
