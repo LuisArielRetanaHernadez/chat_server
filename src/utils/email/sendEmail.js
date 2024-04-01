@@ -1,4 +1,4 @@
-import { transport } from './transport'
+import { transport } from '../nodemailer/transport'
 
 const sendEmail = (to, from, subject, content, templateName) => {
   transport.send({
