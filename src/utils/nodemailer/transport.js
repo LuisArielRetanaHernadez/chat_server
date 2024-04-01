@@ -1,7 +1,5 @@
 const nodemialer = require('nodemailer')
 
-const Email = require('email-templates')
-
 let transport = null
 
 if (process.env.NODE_ENV !== 'development') {
