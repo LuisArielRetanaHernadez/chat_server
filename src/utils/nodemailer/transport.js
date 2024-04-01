@@ -31,7 +31,12 @@ const email = new Email({
     from: process.env.FROM
   },
   send: true,
-  transport
+  transport,
+  views: {
+    options: {
+      extension: 'handlebars'
+    }
+  }
 })
 
 export default email
