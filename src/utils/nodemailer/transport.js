@@ -34,4 +34,4 @@ const email = new Email({
   transport
 })
 
-exports.transport = email
+export default email
