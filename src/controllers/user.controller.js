@@ -97,6 +97,7 @@ exports.login = tryCathc(async (req, res, next) => {
 
 exports.checkEmail = tryCathc(async (req, res, next) => {
   const { token } = req.params
+  const { code } = req.body
 
   const verifyToken = await jsonwebtoken.verify(token, process.env.JW_SECRET)
 
@@ -105,6 +106,12 @@ exports.checkEmail = tryCathc(async (req, res, next) => {
   }
 
   const checkEmail = await CheckEmail.findOne({ token, status: 'pending' })
+
+  const isMatch = await bcrypt.compare(code, checkEmail.code)
+
+  if (!isMatch) {
+    return next(new AppError('code invalid', 401))
+  }
 
   if (!checkEmail) {
     return next(new AppError('token invalid', 401))
