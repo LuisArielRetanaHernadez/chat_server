@@ -40,6 +40,7 @@ exports.register = tryCathc(async (req, res, next) => {
   const codeCrypt = await bcrypt.hash(code, salt)
 
   const verifyEmail = await CheckEmail.create({
+    user: user._id,
     email,
     code: codeCrypt,
     token
@@ -105,7 +106,7 @@ exports.checkEmail = tryCathc(async (req, res, next) => {
     return next(new AppError('token invalid', 401))
   }
 
-  const checkEmail = await CheckEmail.findOne({ token, status: 'pending' })
+  const checkEmail = await CheckEmail.findOne({ token, status: 'pending', user: verifyToken.id })
 
   const isMatch = await bcrypt.compare(code, checkEmail.code)
 
@@ -117,15 +118,23 @@ exports.checkEmail = tryCathc(async (req, res, next) => {
     return next(new AppError('token invalid', 401))
   }
 
-  const user = await User.findOne({ email: checkEmail.email })
+  await checkEmail.updateOne({ status: 'verified' })
+
+  await checkEmail.save()
+
+  const user = await User.findOne({ _id: verifyToken.id, email: checkEmail.email })
 
   if (!user) {
     return next(new AppError('user not found', 401))
   }
 
-  await user.updateOne({ isVerified: true })
+  await user.updateOne({ status: 'active' })
 
   await user.save()
+
+  await CheckEmail.deleteMany({ email: checkEmail.email, status: 'pending' })
+
+  await User.deleteMany({ email: checkEmail.email, status: 'pending' })
 
   return res.status(200).json({
     message: 'email verified',
