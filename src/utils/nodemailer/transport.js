@@ -26,17 +26,4 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-const email = new Email({
-  message: {
-    from: process.env.FROM
-  },
-  send: true,
-  transport,
-  views: {
-    options: {
-      extension: 'handlebars'
-    }
-  }
-})
-
-export default email
+export default transport
