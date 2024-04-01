@@ -1,5 +1,7 @@
 const nodemialer = require('nodemailer')
 
+const Email = require('email-templates')
+
 let transport = null
 
 if (process.env.NODE_ENV !== 'development') {
@@ -24,4 +26,12 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-exports.transport = transport
+const email = new Email({
+  message: {
+    from: process.env.FROM
+  },
+  send: true,
+  transport
+})
+
+exports.transport = email
