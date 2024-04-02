@@ -12,7 +12,7 @@ const { default: sendEmail } = require('../utils/email/sendEmail')
 exports.register = tryCathc(async (req, res, next) => {
   const { email } = req.body
 
-  const userFind = await User.findOne({ email })
+  const userFind = await User.findOne({ email, status: 'active' })
 
   if (userFind) {
     return next(new AppError('is email register', 401))
@@ -53,7 +53,11 @@ exports.register = tryCathc(async (req, res, next) => {
 
   delete user.password
 
-  sendEmail('regalomessi10@gmail.com', 'regalomessi10@gmail.com', { code }, 'verifyEmail')
+  const checkSendEmail = sendEmail(email, 'regalomessi10@gmail.com', { code }, 'verifyEmail')
+
+  if (!checkSendEmail) {
+    return next(new AppError('error send email', 401))
+  }
 
   return res.status(201).json({
     message: 'user created',
