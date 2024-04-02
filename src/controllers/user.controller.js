@@ -102,7 +102,7 @@ exports.login = tryCathc(async (req, res, next) => {
   })
 })
 
-exports.checkEmail = tryCathc(async (req, res, next) => {
+exports.verifyEmail = tryCathc(async (req, res, next) => {
   const { token } = req.params
   const { code } = req.body
 
