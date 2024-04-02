@@ -4,7 +4,7 @@ const transport = require('../nodemailer/transport')
 
 const email = new Email({
   message: {
-    from: process.env.FROM
+    from: 'regalomessi10@gmail.com'
   },
   send: true,
   transport,
