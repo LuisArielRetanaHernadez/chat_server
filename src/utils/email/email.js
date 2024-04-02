@@ -10,7 +10,7 @@ const email = new Email({
   transport,
   views: {
     options: {
-      extension: 'handlebars'
+      extension: 'hbs'
     }
   }
 })
