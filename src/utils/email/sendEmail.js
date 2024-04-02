@@ -6,16 +6,14 @@ const path = require('path')
 
 const sendEmail = async (to, from, subject, content, templateName) => {
   const dirCurrent = __dirname
-  // const dirTemplate = path.join(dirCurrent, 'templates')
 
-  // fs.readFile(path.join(dirCurrent, 'templates', templateName), 'utf8', (err, html) => {
-  //   if (err) throw err
-  //   content = html
-  // })
+  // obtener verificar si el template existe y luego obtener el template
+  const templatePath = path.join(dirCurrent, templateName)
 
   fs.readdir(dirCurrent, (err, files) => {
     if (err) throw new AppError(err, 404)
     const foldersName = files.filter(file => fs.lstatSync(path.join(dirCurrent, file)).isDirectory())
+    console.log(foldersName)
     if (!foldersName.includes(templateName)) {
       throw new AppError('template not found', 404)
     }
@@ -23,7 +21,7 @@ const sendEmail = async (to, from, subject, content, templateName) => {
 
   try {
     await email.send({
-      template: templateName,
+      template: templatePath,
       message: {
         to,
         from,
@@ -31,8 +29,7 @@ const sendEmail = async (to, from, subject, content, templateName) => {
         content
       },
       locals: {
-        subject,
-        content
+        ...content
       }
     })
   } catch (error) {
