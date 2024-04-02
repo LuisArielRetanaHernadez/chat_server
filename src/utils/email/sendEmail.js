@@ -4,7 +4,7 @@ const email = require('../email/email')
 const fs = require('fs')
 const path = require('path')
 
-const sendEmail = (to, from, subject, content, templateName) => {
+const sendEmail = async (to, from, subject, content, templateName) => {
   const dirCurrent = __dirname
   // const dirTemplate = path.join(dirCurrent, 'templates')
 
@@ -21,19 +21,23 @@ const sendEmail = (to, from, subject, content, templateName) => {
     }
   })
 
-  email.send({
-    template: templateName,
-    message: {
-      to,
-      from,
-      subject,
-      content
-    },
-    locals: {
-      subject,
-      content
-    }
-  })
+  try {
+    await email.send({
+      template: templateName,
+      message: {
+        to,
+        from,
+        subject,
+        content
+      },
+      locals: {
+        subject,
+        content
+      }
+    })
+  } catch (error) {
+    throw new AppError(error, 500)
+  }
 }
 
 module.exports = sendEmail
