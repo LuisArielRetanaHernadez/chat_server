@@ -15,4 +15,4 @@ const email = new Email({
   }
 })
 
-export default email
+module.exports = email
