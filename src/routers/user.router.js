@@ -12,7 +12,7 @@ const router = express.Router()
 
 // user
 router.post('/register', validate(registerUser), register)
-router.post('/check/email/:token', checkEmail)
+router.post('/verify/email/:token', checkEmail)
 router.post('/login', validate(loginUser), login)
 router.get('/search', auth, searchUsers)
 router.get('/:id', auth, getUser)
