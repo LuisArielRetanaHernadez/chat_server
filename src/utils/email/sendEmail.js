@@ -14,10 +14,10 @@ const sendEmail = async (to, from, subject, content, templateName) => {
   // })
 
   fs.readdir(dirCurrent, (err, files) => {
-    if (err) throw AppError(err, 404)
+    if (err) throw new AppError(err, 404)
     const foldersName = files.filter(file => fs.lstatSync(path.join(dirCurrent, file)).isDirectory())
     if (!foldersName.includes(templateName)) {
-      throw AppError('template not found', 404)
+      throw new AppError('template not found', 404)
     }
   })
 
