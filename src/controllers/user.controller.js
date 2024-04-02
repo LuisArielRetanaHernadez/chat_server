@@ -113,19 +113,16 @@ exports.checkEmail = tryCathc(async (req, res, next) => {
   }
 
   const checkEmail = await CheckEmail.findOne({ token, status: 'pending', user: verifyToken.id })
-
   const isMatch = await bcrypt.compare(code, checkEmail.code)
 
   if (!isMatch) {
     return next(new AppError('code invalid', 401))
   }
-
   if (!checkEmail) {
     return next(new AppError('token invalid', 401))
   }
 
   await checkEmail.updateOne({ status: 'verified' })
-
   await checkEmail.save()
 
   const user = await User.findOne({ _id: verifyToken.id, email: checkEmail.email })
@@ -140,10 +137,13 @@ exports.checkEmail = tryCathc(async (req, res, next) => {
   await CheckEmail.deleteMany({ email: checkEmail.email, status: 'pending' })
   await User.deleteMany({ email: checkEmail.email, status: 'pending' })
 
+  const tokenSeccion = jsonwebtoken.sign({ id: user._id }, process.env.JW_SECRET, { expiresIn: process.env.JWT_EXPIRE })
+
   return res.status(200).json({
     message: 'email verified',
     data: {
-      user
+      user,
+      token: tokenSeccion
     },
     status: 'success'
   })
