@@ -203,3 +203,23 @@ exports.searchUsers = tryCathc(async (req, res, next) => {
     }
   })
 })
+
+exports.verifyToken = tryCathc(async (req, res, next) => {
+  const { token } = req.params
+
+  const isVerifyToken = await jsonwebtoken.verify(token, process.env.JW_SECRET)
+
+  if (!isVerifyToken) {
+    return next(new AppError('token invalid', 401))
+  }
+
+  const existToken = await CheckEmail.findOne({ token, status: 'pending' })
+
+  if (!existToken) {
+    return next(new AppError('token invalid', 401))
+  }
+
+  return res.status(200).json({
+    message: 'token valid'
+  })
+})
