@@ -7,7 +7,7 @@ const jsonwebtoken = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const CheckEmail = require('../database/models/CheckEmail.model')
 const { arrayDeBytesgenerateCode } = require('../utils/generateCode')
-const { default: sendEmail } = require('../utils/email/sendEmail')
+const sendEmail = require('../utils/email/sendEmail')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { email } = req.body
