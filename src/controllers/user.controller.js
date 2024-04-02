@@ -53,7 +53,7 @@ exports.register = tryCathc(async (req, res, next) => {
 
   delete user.password
 
-  const checkSendEmail = sendEmail(email, 'regalomessi10@gmail.com', { code }, 'verifyEmail')
+  const checkSendEmail = sendEmail(email, 'regalomessi10@gmail.com', 'verificaion de correo', { code }, 'verifyEmail')
 
   if (!checkSendEmail) {
     return next(new AppError('error send email', 401))
