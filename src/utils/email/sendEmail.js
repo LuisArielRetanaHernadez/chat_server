@@ -1,5 +1,5 @@
 const AppError = require('../AppError')
-const transport = require('../nodemailer/transport')
+const email = require('../email/email')
 
 const fs = require('fs')
 const path = require('path')
@@ -21,7 +21,7 @@ const sendEmail = (to, from, subject, content, templateName) => {
     }
   })
 
-  transport.send({
+  email.send({
     template: templateName,
     message: {
       to,
