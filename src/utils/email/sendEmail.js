@@ -1,5 +1,5 @@
-import AppError from '../AppError'
-import { transport } from '../nodemailer/transport'
+const AppError = require('../AppError')
+const transport = require('../nodemailer/transport')
 
 const fs = require('fs')
 const path = require('path')
@@ -36,4 +36,4 @@ const sendEmail = (to, from, subject, content, templateName) => {
   })
 }
 
-export default sendEmail
+module.exports = sendEmail
