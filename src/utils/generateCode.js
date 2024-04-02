@@ -9,8 +9,6 @@ exports.arrayDeBytesgenerateCode = (type = 'alfanumerico', numbers = 4) => {
 
   const arrayDeBytes = new Uint8Array(numbers)
 
-  window.crypto.getRandomValues(arrayDeBytes)
-
   for (let i = 0; i < numbers; i++) {
     code += caracters[type][arrayDeBytes[i] % caracters[type].length]
   }
