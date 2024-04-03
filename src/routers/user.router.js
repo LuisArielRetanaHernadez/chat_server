@@ -5,7 +5,7 @@ const { registerUser, loginUser } = require('../middlewares/expressValidator/use
 const validate = require('../middlewares/validate.middleware')
 
 // controller
-const { register, login, searchUsers, getUser, verifyEmail, verifyTokenEmail } = require('../controllers/user.controller')
+const { register, login, searchUsers, getUser, verifyEmail, verifyTokenEmail, resendCodeEmail } = require('../controllers/user.controller')
 const { auth } = require('../middlewares/auth.middleware')
 
 const router = express.Router()
@@ -18,5 +18,6 @@ router.get('/search', auth, searchUsers)
 router.get('/:id', auth, getUser)
 
 router.get('/verify/email/token/:token', verifyTokenEmail)
+router.get('/resend/code/email', resendCodeEmail)
 
 module.exports = { routerUser: router }
