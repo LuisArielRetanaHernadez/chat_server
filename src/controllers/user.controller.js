@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt')
 const CheckEmail = require('../database/models/CheckEmail.model')
 const { arrayDeBytesgenerateCode } = require('../utils/generateCode')
 const sendEmail = require('../utils/email/sendEmail')
+const verifyToken = require('../utils/verifyToken')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { email } = req.body
@@ -150,6 +151,45 @@ exports.verifyEmail = tryCathc(async (req, res, next) => {
   })
 })
 
+exports.resendCodeEmail = tryCathc(async (req, res, next) => {
+  const { token } = req.params
+  const { email } = req.body
+
+  const checkToken = verifyToken(token)
+
+  if (!checkToken) {
+    return next(new AppError('token invalid', 401))
+  }
+
+  const user = await User.findOne({ _id: checkToken.id, email })
+
+  if (!user) {
+    return next(new AppError('user not found', 401))
+  }
+
+  const code = arrayDeBytesgenerateCode()
+
+  const codeCrypt = await bcrypt.hash(code, 8)
+
+  const checkEmail = await CheckEmail.findOne({ email, status: 'pending', token, user: checkToken.id })
+
+  if (!checkEmail) {
+    return next(new AppError('token invalid', 401))
+  }
+
+  await checkEmail.updateOne({ code: codeCrypt })
+
+  const checkSendEmail = await sendEmail(email, 'chat.mabi@gmail.com', 'verificaion de correo', { code }, 'verifyEmail')
+
+  if (!checkSendEmail) {
+    return next(new AppError('error send email', 401))
+  }
+
+  return res.status(200).json({
+    message: 'code resend'
+  })
+})
+
 exports.getUser = tryCathc(async (req, res, next) => {
   const { userCurrent } = req
   const { id } = req.params
@@ -205,7 +245,7 @@ exports.searchUsers = tryCathc(async (req, res, next) => {
   })
 })
 
-exports.verifyToken = tryCathc(async (req, res, next) => {
+exports.verifyTokenEmail = tryCathc(async (req, res, next) => {
   const { token } = req.params
 
   const isVerifyToken = await jsonwebtoken.verify(token, process.env.JW_SECRET)
