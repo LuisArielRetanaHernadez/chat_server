@@ -153,7 +153,6 @@ exports.verifyEmail = tryCathc(async (req, res, next) => {
 
 exports.resendCodeEmail = tryCathc(async (req, res, next) => {
   const { token } = req.params
-  const { email } = req.body
 
   const checkToken = verifyToken(token)
 
@@ -161,7 +160,7 @@ exports.resendCodeEmail = tryCathc(async (req, res, next) => {
     return next(new AppError('token invalid', 401))
   }
 
-  const user = await User.findOne({ _id: checkToken.id, email })
+  const user = await User.findOne({ _id: checkToken.id, token })
 
   if (!user) {
     return next(new AppError('user not found', 401))
@@ -171,7 +170,7 @@ exports.resendCodeEmail = tryCathc(async (req, res, next) => {
 
   const codeCrypt = await bcrypt.hash(code, 8)
 
-  const checkEmail = await CheckEmail.findOne({ email, status: 'pending', token, user: checkToken.id })
+  const checkEmail = await CheckEmail.findOne({ email: user.email, status: 'pending', token, user: checkToken.id })
 
   if (!checkEmail) {
     return next(new AppError('token invalid', 401))
@@ -179,7 +178,7 @@ exports.resendCodeEmail = tryCathc(async (req, res, next) => {
 
   await checkEmail.updateOne({ code: codeCrypt })
 
-  const checkSendEmail = await sendEmail(email, 'chat.mabi@gmail.com', 'verificaion de correo', { code }, 'verifyEmail')
+  const checkSendEmail = await sendEmail(user.email, 'chat.mabi@gmail.com', 'verificaion de correo', { code }, 'verifyEmail')
 
   if (!checkSendEmail) {
     return next(new AppError('error send email', 401))
