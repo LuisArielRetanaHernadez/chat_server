@@ -178,7 +178,7 @@ exports.resendCodeEmail = tryCathc(async (req, res, next) => {
 
   await checkEmail.updateOne({ code: codeCrypt })
 
-  const checkSendEmail = await sendEmail(user.email, 'chat.mabi@gmail.com', 'verificaion de correo', { code }, 'verifyEmail')
+  const checkSendEmail = sendEmail(user.email, 'chat.mabi@gmail.com', 'verificaion de correo', { code }, 'verifyEmail')
 
   if (!checkSendEmail) {
     return next(new AppError('error send email', 401))
