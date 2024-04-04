@@ -18,6 +18,6 @@ router.get('/search', auth, searchUsers)
 router.get('/:id', auth, getUser)
 
 router.get('/verify/email/token/:token', verifyTokenEmail)
-router.get('/resend/code/email', resendCodeEmail)
+router.get('/resend/code/email/:token', resendCodeEmail)
 
 module.exports = { routerUser: router }
