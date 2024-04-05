@@ -10,5 +10,8 @@ exports.createSignCloudinary = tryCathc(async (req, res) => {
     // public_id: req.body.public_id,
     // api_key: process.env.CLOUDINARY_API_KEY
   }, process.env.CLOUDINARY_API_SECRET)
-  res.json({ signature, timestamp })
+  res.status(200).json({
+    timestamp,
+    signature
+  })
 })
