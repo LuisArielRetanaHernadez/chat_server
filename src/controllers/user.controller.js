@@ -287,3 +287,21 @@ exports.verifyTokenEmail = tryCathc(async (req, res, next) => {
     message: 'token valid'
   })
 })
+
+exports.verifyUserAuthAndId = tryCathc(async (req, res, next) => {
+  const { userCurrent } = req
+  const { id } = req.params
+
+  if (userCurrent.id === id) {
+    return next(new AppError('user not found', 401))
+  }
+
+  const user = await User.findOne({ _id: id })
+
+  if (!user) {
+    return next(new AppError('user not found', 401))
+  }
+  return res.status(200).json({
+    message: 'user verify success'
+  })
+})
