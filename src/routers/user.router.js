@@ -5,7 +5,7 @@ const { registerUser, loginUser } = require('../middlewares/expressValidator/use
 const validate = require('../middlewares/validate.middleware')
 
 // controller
-const { register, login, searchUsers, getUser, verifyEmail, verifyTokenEmail, resendCodeEmail, uploadPhotoProfile } = require('../controllers/user.controller')
+const { register, login, searchUsers, getUser, verifyEmail, verifyTokenEmail, resendCodeEmail, uploadPhotoProfile, verifyUserAuthAndId } = require('../controllers/user.controller')
 const { auth } = require('../middlewares/auth.middleware')
 const { verifyUser } = require('../middlewares/verifyUser.middleware')
 const { protectUser } = require('../middlewares/protectUser.middleware')
@@ -22,5 +22,7 @@ router.get('/:id', auth, getUser)
 
 router.get('/verify/email/token/:token', verifyTokenEmail)
 router.get('/resend/code/email/:token', resendCodeEmail)
+
+router.get('/verify/user/:id', auth, verifyUser, verifyUserAuthAndId)
 
 module.exports = { routerUser: router }
