@@ -70,6 +70,30 @@ exports.register = tryCathc(async (req, res, next) => {
   })
 })
 
+exports.uploadPhotoProfile = tryCathc(async (req, res, next) => {
+  const { userCurrent } = req
+  const { photo } = req.body
+
+  const user = await User.findById(userCurrent.id)
+
+  if (!user) {
+    return next(new AppError('user not found', 401))
+  }
+
+  await user.updateOne({ photo })
+  await user.save()
+
+  user.password = undefined
+
+  return res.status(200).json({
+    message: 'photo profile updated',
+    data: {
+      user
+    },
+    status: 'success'
+  })
+})
+
 exports.login = tryCathc(async (req, res, next) => {
   const { email, password } = req.body
 
