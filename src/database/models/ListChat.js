@@ -5,6 +5,10 @@ const listChatSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Chat'
   }],
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   order: {
     type: String,
     default: 'recent'
