@@ -37,7 +37,6 @@ const verifyConnect = async (socket) => {
 
   return null
 }
-console.log('clients ', clients)
 
 module.exports = (io) => {
   io.of('/users').use(async (socket, next) => {
@@ -51,6 +50,7 @@ module.exports = (io) => {
     if (clients[user.id]) {
       return next()
     }
+
     clients[user.id] = {
       socketID: socket.id,
       name: user.name,
@@ -62,18 +62,20 @@ module.exports = (io) => {
 
     next()
   })
+
   io.of('/users').on('connection', (socket) => {
     socket.on('users online', async () => {
       const usersOnline = await User.find({ isOnline: true })
       socket.emit('users online', usersOnline)
     })
+
     socket.on('isUserOnline', async (userId) => {
       const isUserOnline = Boolean(clients[userId])
       socket.emit('isUserOnline', isUserOnline)
     })
 
     socket.on('send message', (data) => {
-      socket.to(clients[data.to].socketID).emit('message', {
+      socket.to(clients[data.to]?.socketID).emit('message', {
         message: data.message,
         to: data.to,
         username: clients[socket.userID].username
