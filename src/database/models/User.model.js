@@ -33,6 +33,9 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
   }],
+  photo: {
+    type: String
+  },
   status: {
     type: String,
     default: 'pending'
