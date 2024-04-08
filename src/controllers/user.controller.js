@@ -63,7 +63,8 @@ exports.register = tryCathc(async (req, res, next) => {
   return res.status(201).json({
     message: 'user created',
     data: {
-      url: `http://localhost:5173/email/verify/${token}`,
+      url: `http://localhost:5173/email/verify/${user._id}`,
+      id: user._id,
       token
     },
     status: 'success'
