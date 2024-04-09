@@ -9,6 +9,7 @@ const CheckEmail = require('../database/models/CheckEmail.model')
 const { arrayDeBytesgenerateCode } = require('../utils/generateCode')
 const sendEmail = require('../utils/email/sendEmail')
 const verifyToken = require('../utils/jwt/verifyToken')
+const signToken = require('../utils/jwt/signToken')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { email } = req.body
@@ -36,7 +37,7 @@ exports.register = tryCathc(async (req, res, next) => {
     return next(new AppError('error create user', 401))
   }
 
-  const token = await jsonwebtoken.sign({ id: user._id }, process.env.JW_SECRET, { expiresIn: '1h' })
+  const token = signToken({ id: user._id }, '1h')
   const code = arrayDeBytesgenerateCode()
 
   const codeCrypt = await bcrypt.hash(code, salt)
