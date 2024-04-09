@@ -34,7 +34,8 @@ const userSchema = new mongoose.Schema({
     ref: 'Users'
   }],
   photo: {
-    type: String
+    type: String,
+    default: 'https://res.cloudinary.com/dqmkovsdy/image/upload/v1712350100/chat/photo_profile_default/epspfzghsr7md5dlci32.jpg'
   },
   status: {
     type: String,
