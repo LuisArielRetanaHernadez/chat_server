@@ -14,9 +14,6 @@ const sendEmail = require('../utils/email/sendEmail')
 const verifyToken = require('../utils/jwt/verifyToken')
 const signToken = require('../utils/jwt/signToken')
 
-// jsonwebtoken
-const jsonwebtoken = require('jsonwebtoken')
-
 // bcrypt
 const bcrypt = require('bcrypt')
 
@@ -174,7 +171,7 @@ exports.verifyEmail = tryCathc(async (req, res, next) => {
   await CheckEmail.deleteMany({ email: checkEmail.email, status: 'pending' })
   await User.deleteMany({ email: checkEmail.email, status: 'pending' })
 
-  const tokenSeccion = jsonwebtoken.sign({ id: user._id }, process.env.JW_SECRET, { expiresIn: process.env.JWT_EXPIRE })
+  const tokenSeccion = signToken({ id: user._id }, process.env.JWT_EXPIRE)
 
   return res.status(200).json({
     message: 'email verified',
@@ -283,7 +280,7 @@ exports.searchUsers = tryCathc(async (req, res, next) => {
 exports.verifyTokenEmail = tryCathc(async (req, res, next) => {
   const { token } = req.params
 
-  const isVerifyToken = await jsonwebtoken.verify(token, process.env.JW_SECRET)
+  const isVerifyToken = verifyToken(token)
 
   if (!isVerifyToken) {
     return next(new AppError('token invalid', 401))
