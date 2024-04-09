@@ -72,10 +72,10 @@ exports.register = tryCathc(async (req, res, next) => {
 })
 
 exports.uploadPhotoProfile = tryCathc(async (req, res, next) => {
-  const { userCurrent } = req
+  const { id } = req.params
   const { photo } = req.body
 
-  const user = await User.findById(userCurrent.id)
+  const user = await User.findById(id)
 
   if (!user) {
     return next(new AppError('user not found', 401))
