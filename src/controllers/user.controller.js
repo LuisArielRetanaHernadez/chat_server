@@ -133,7 +133,11 @@ exports.verifyEmail = tryCathc(async (req, res, next) => {
   const { token } = req.params
   const { code } = req.body
 
+  console.log('token ', token, ' code ', code)
+
   const verifyToken = await jsonwebtoken.verify(token, process.env.JW_SECRET)
+
+  console.log('verifyToken: ', verifyToken, ' token ', token, ' code ', code)
 
   if (!verifyToken) {
     return next(new AppError('token invalid', 401))
@@ -180,12 +184,13 @@ exports.resendCodeEmail = tryCathc(async (req, res, next) => {
   const { token } = req.params
 
   const checkToken = verifyToken(token)
+  console.log('checkToken: ', checkToken, ' token ', token)
 
   if (!checkToken) {
     return next(new AppError('token invalid', 401))
   }
 
-  const user = await User.findOne({ _id: checkToken.id, token })
+  const user = await User.findOne({ _id: checkToken.id })
 
   if (!user) {
     return next(new AppError('user not found', 401))
@@ -293,14 +298,8 @@ exports.verifyUserAuthAndId = tryCathc(async (req, res, next) => {
   const { userCurrent } = req
   const { id } = req.params
 
-  if (userCurrent.id === id) {
-    return next(new AppError('user not found', 401))
-  }
-
-  const user = await User.findOne({ _id: id })
-
-  if (!user) {
-    return next(new AppError('user not found', 401))
+  if (userCurrent.id !== id) {
+    return next(new AppError('User Unknown', 401))
   }
   return res.status(200).json({
     message: 'user verify success'
