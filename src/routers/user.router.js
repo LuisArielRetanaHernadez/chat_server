@@ -14,7 +14,7 @@ const router = express.Router()
 
 // user
 router.post('/register', validate(registerUser), register)
-router.post('/upload/image/profile', auth, verifyUser, protectUser, uploadPhotoProfile)
+router.post('/upload/image/profile/:id', auth, verifyUser, protectUser, uploadPhotoProfile)
 router.post('/verify/email/:token', verifyEmail)
 router.post('/login', validate(loginUser), login)
 router.get('/search', auth, searchUsers)
