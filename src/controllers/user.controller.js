@@ -120,7 +120,7 @@ exports.login = tryCathc(async (req, res, next) => {
     return next(new AppError('invalide crendetials', 401))
   }
 
-  const token = await jsonwebtoken.sign({ id: user._id }, process.env.JW_SECRET, { expiresIn: process.env.JWT_EXPIRE })
+  const token = signToken({ id: user._id }, process.env.JWT_EXPIRE)
 
   // actualizar el campo isOnline a true
   await user.updateOne({ isOnline: true })
@@ -143,17 +143,13 @@ exports.verifyEmail = tryCathc(async (req, res, next) => {
   const { token } = req.params
   const { code } = req.body
 
-  console.log('token ', token, ' code ', code)
+  const checkToken = verifyToken(token)
 
-  const verifyToken = await jsonwebtoken.verify(token, process.env.JW_SECRET)
-
-  console.log('verifyToken: ', verifyToken, ' token ', token, ' code ', code)
-
-  if (!verifyToken) {
+  if (!checkToken) {
     return next(new AppError('token invalid', 401))
   }
 
-  const checkEmail = await CheckEmail.findOne({ token, status: 'pending', user: verifyToken.id })
+  const checkEmail = await CheckEmail.findOne({ token, status: 'pending', user: checkToken.id })
   const isMatch = await bcrypt.compare(code, checkEmail.code)
 
   if (!isMatch) {
@@ -166,7 +162,7 @@ exports.verifyEmail = tryCathc(async (req, res, next) => {
   await checkEmail.updateOne({ status: 'verified' })
   await checkEmail.save()
 
-  const user = await User.findOne({ _id: verifyToken.id, email: checkEmail.email })
+  const user = await User.findOne({ _id: checkToken.id, email: checkEmail.email })
 
   if (!user) {
     return next(new AppError('user not found', 401))
