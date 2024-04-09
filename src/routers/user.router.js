@@ -1,14 +1,31 @@
+// express
 const express = require('express')
 
-// middleware
-const { registerUser, loginUser } = require('../middlewares/expressValidator/user.body')
+// middlewares
 const validate = require('../middlewares/validate.middleware')
-
-// controller
-const { register, login, searchUsers, getUser, verifyEmail, verifyTokenEmail, resendCodeEmail, uploadPhotoProfile, verifyUserAuthAndId } = require('../controllers/user.controller')
 const { auth } = require('../middlewares/auth.middleware')
+
+// middlewares -> expressValidator
+const { registerUser, loginUser } = require('../middlewares/expressValidator/user.body')
+
+// middlewares -> verifyUser
 const { verifyUser } = require('../middlewares/verifyUser.middleware')
+
+// middlewares -> protectUser
 const { protectUser } = require('../middlewares/protectUser.middleware')
+
+// controller (user)
+const {
+  register,
+  login,
+  searchUsers,
+  getUser,
+  verifyEmail,
+  verifyTokenEmail,
+  resendCodeEmail,
+  uploadPhotoProfile,
+  verifyUserAuthAndId
+} = require('../controllers/user.controller')
 
 const router = express.Router()
 
