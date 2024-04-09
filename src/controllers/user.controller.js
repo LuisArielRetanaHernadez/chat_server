@@ -1,15 +1,24 @@
+// models
 const User = require('../database/models/User.model')
+const CheckEmail = require('../database/models/CheckEmail.model')
+
+// utils
 const AppError = require('../utils/AppError')
 const tryCathc = require('../utils/tryCathc')
-
-const jsonwebtoken = require('jsonwebtoken')
-
-const bcrypt = require('bcrypt')
-const CheckEmail = require('../database/models/CheckEmail.model')
 const { arrayDeBytesgenerateCode } = require('../utils/generateCode')
+
+// utils -> email
 const sendEmail = require('../utils/email/sendEmail')
+
+// utils -> jwt
 const verifyToken = require('../utils/jwt/verifyToken')
 const signToken = require('../utils/jwt/signToken')
+
+// jsonwebtoken
+const jsonwebtoken = require('jsonwebtoken')
+
+// bcrypt
+const bcrypt = require('bcrypt')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { email } = req.body
