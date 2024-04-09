@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt')
 const CheckEmail = require('../database/models/CheckEmail.model')
 const { arrayDeBytesgenerateCode } = require('../utils/generateCode')
 const sendEmail = require('../utils/email/sendEmail')
-const verifyToken = require('../utils/verifyToken')
+const verifyToken = require('../utils/jwt/verifyToken')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { email } = req.body
