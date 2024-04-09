@@ -187,7 +187,6 @@ exports.resendCodeEmail = tryCathc(async (req, res, next) => {
   const { token } = req.params
 
   const checkToken = verifyToken(token)
-  console.log('checkToken: ', checkToken, ' token ', token)
 
   if (!checkToken) {
     return next(new AppError('token invalid', 401))
@@ -200,7 +199,6 @@ exports.resendCodeEmail = tryCathc(async (req, res, next) => {
   }
 
   const code = arrayDeBytesgenerateCode()
-
   const codeCrypt = await bcrypt.hash(code, 8)
 
   const checkEmail = await CheckEmail.findOne({ email: user.email, status: 'pending', token, user: checkToken.id })
@@ -235,8 +233,6 @@ exports.getUser = tryCathc(async (req, res, next) => {
 
   const contact = await User.exists({ _id: userCurrent.id, contacts: id })
 
-  console.log('contact: ', contact)
-
   if (contact !== null && !contact) {
     return next(new AppError('user not found', 401))
   }
@@ -252,7 +248,6 @@ exports.getUser = tryCathc(async (req, res, next) => {
 
 exports.searchUsers = tryCathc(async (req, res, next) => {
   const { user } = req.query
-  console.log('user: ', req.query)
 
   const usersFind = await User.find({
     $or: [
