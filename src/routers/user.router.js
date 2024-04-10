@@ -30,15 +30,20 @@ const {
 const router = express.Router()
 
 // user
-router.post('/register', validate(registerUser), register)
-router.post('/upload/image/profile/:id', auth, verifyUser, protectUser, uploadPhotoProfile)
-router.post('/verify/email/:token', verifyEmail)
+
 router.post('/login', validate(loginUser), login)
-router.get('/search', auth, searchUsers)
+router.post('/register', validate(registerUser), register)
+
+router.post('/verify/email/:token', verifyEmail)
+router.get('/resend/code/email/:token', resendCodeEmail)
+router.get('/verify/email/token/:token', verifyTokenEmail)
+
+router.use(auth)
+
 router.get('/:id', auth, getUser)
 
-router.get('/verify/email/token/:token', verifyTokenEmail)
-router.get('/resend/code/email/:token', resendCodeEmail)
+router.post('/upload/image/profile/:id', auth, verifyUser, protectUser, uploadPhotoProfile)
+router.get('/search', auth, searchUsers)
 
 router.get('/verify/user/:id', auth, verifyUser, verifyUserAuthAndId)
 
