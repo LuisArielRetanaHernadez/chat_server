@@ -38,13 +38,13 @@ router.post('/verify/email/:token', verifyEmail)
 router.get('/resend/code/email/:token', resendCodeEmail)
 router.get('/verify/email/token/:token', verifyTokenEmail)
 
+router.get('/search', auth, searchUsers)
+
 router.use(auth)
 
 router.get('/:id', getUser)
 
 router.post('/upload/image/profile/:id', verifyUser, protectUser, uploadPhotoProfile)
-
-router.get('/search', auth, searchUsers)
 
 router.get('/verify/user/:id', verifyUser, verifyUserAuthAndId)
 
