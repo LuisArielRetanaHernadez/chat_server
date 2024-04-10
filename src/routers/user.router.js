@@ -40,11 +40,11 @@ router.get('/verify/email/token/:token', verifyTokenEmail)
 
 router.use(auth)
 
-router.get('/:id', auth, getUser)
+router.get('/:id', getUser)
 
-router.post('/upload/image/profile/:id', auth, verifyUser, protectUser, uploadPhotoProfile)
-router.get('/search', auth, searchUsers)
+router.post('/upload/image/profile/:id', verifyUser, protectUser, uploadPhotoProfile)
+router.get('/search', searchUsers)
 
-router.get('/verify/user/:id', auth, verifyUser, verifyUserAuthAndId)
+router.get('/verify/user/:id', verifyUser, verifyUserAuthAndId)
 
 module.exports = { routerUser: router }
