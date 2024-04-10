@@ -43,7 +43,8 @@ router.use(auth)
 router.get('/:id', getUser)
 
 router.post('/upload/image/profile/:id', verifyUser, protectUser, uploadPhotoProfile)
-router.get('/search', searchUsers)
+
+router.get('/search', auth, searchUsers)
 
 router.get('/verify/user/:id', verifyUser, verifyUserAuthAndId)
 
