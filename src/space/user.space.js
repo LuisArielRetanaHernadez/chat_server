@@ -97,16 +97,23 @@ module.exports = (io) => {
       const listChat = await ListChat.findOne({ user: socket.userID })
         .populate({
           path: 'chats',
-          populate: {
-            path: 'messages',
-            model: Message,
-            options: { sort: { createdAt: -1 } }
-          }
+          match: { isGroup: false },
+          populate: [
+            {
+              path: 'messages',
+              options: { sort: { createdAt: -1 } }
+            },
+            {
+              path: 'users',
+              select: 'username photo'
+            }
+          ]
         })
 
       const chatsOrdends = listChat.chats.sort((a, b) => {
         return new Date(b.messages[0].createdAt) - new Date(a.messages[0].createdAt)
       })
+
       socket.emit('list chat', chatsOrdends)
     })
 
