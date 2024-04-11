@@ -96,7 +96,7 @@ module.exports = (io) => {
     socket.on('list chat', async () => {
       const listChat = await ListChat.findOne({ user: socket.userID })
         .populate({
-          path: 'chat',
+          path: 'chats',
           populate: {
             path: 'messages',
             model: Message,
