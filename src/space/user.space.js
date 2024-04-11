@@ -1,4 +1,5 @@
 const User = require('../database/models/User.model')
+const { userMiddleware } = require('../middlewares/socket/user/socketUser.middleware')
 const AppError = require('../utils/AppError')
 const jwt = require('jsonwebtoken')
 
@@ -64,6 +65,14 @@ module.exports = (io) => {
   })
 
   io.of('/users').on('connection', (socket) => {
+    console.log('users connects ', clients)
+    socket.use((event, next) => {
+      console.log('pasara el middleware??')
+      if (userMiddleware[event[0]] !== undefined) {
+        console.log('si esta el middleware')
+        userMiddleware[event[0]](socket, event[1], next)
+      }
+    })
     socket.on('users online', async () => {
       const usersOnline = await User.find({ isOnline: true })
       socket.emit('users online', usersOnline)
