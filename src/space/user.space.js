@@ -1,3 +1,5 @@
+const ListChat = require('../database/models/ListChat')
+const Message = require('../database/models/Menssage.model')
 const User = require('../database/models/User.model')
 const { userMiddleware } = require('../middlewares/socket/user/socketUser.middleware')
 const AppError = require('../utils/AppError')
@@ -89,6 +91,23 @@ module.exports = (io) => {
         to: data.to,
         username: clients[socket.userID].username
       })
+    })
+
+    socket.on('list chat', async () => {
+      const listChat = await ListChat.findOne({ user: socket.userID })
+        .populate({
+          path: 'chat',
+          populate: {
+            path: 'messages',
+            model: Message,
+            options: { sort: { createdAt: -1 } }
+          }
+        })
+
+      const chatsOrdends = listChat.chats.sort((a, b) => {
+        return new Date(b.messages[0].createdAt) - new Date(a.messages[0].createdAt)
+      })
+      socket.emit('list chat', chatsOrdends)
     })
 
     socket.on('disconnect', async () => {
