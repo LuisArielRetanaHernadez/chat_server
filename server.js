@@ -14,7 +14,6 @@ const io = new Server(httpServer, {
     origin: '*'
   },
   connectionStateRecovery: {
-    maxDisconnectionDuration: 1000,
     skipMiddlewares: true
   }
 })
