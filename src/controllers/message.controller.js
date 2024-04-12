@@ -1,9 +1,12 @@
 const Chat = require('../database/models/Chat.model')
+const ListChat = require('../database/models/ListChat')
 const Message = require('../database/models/Menssage.model')
 const tryCathc = require('../utils/tryCathc')
 
 exports.saveMessage = async (req, res, next) => {
   const { message } = req.body
+
+  const listChat = await ListChat.findOne({ _id: req.userCurrent.id })
 
   const newMessage = await Message.create({
     content: message,
@@ -33,6 +36,24 @@ exports.saveMessage = async (req, res, next) => {
 
   chat.messages.push(newMessage)
   await chat.save()
+
+  if (listChat === null) {
+    await ListChat.create({
+      _id: req.userCurrent.id,
+      user: req.userCurrent.id,
+      chats: [chat]
+    })
+
+    return res.status(204).json({
+      message: 'send message',
+      status: 'succes'
+    })
+  }
+
+  if (!listChat.chats.includes(chat._id)) {
+    listChat.chats.push(chat)
+    await listChat.save()
+  }
 
   return res.status(204).json({
     message: 'send message',
