@@ -96,7 +96,7 @@ exports.uploadPhotoProfile = tryCathc(async (req, res, next) => {
   return res.status(200).json({
     message: 'photo profile updated',
     data: {
-      user
+      photo
     },
     status: 'success'
   })
