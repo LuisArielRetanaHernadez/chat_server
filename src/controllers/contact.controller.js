@@ -59,6 +59,26 @@ exports.getContact = tryCathc(async (req, res, next) => {
   })
 })
 
+exports.isContact = tryCathc(async (req, res, next) => {
+  const { userCurrent } = req
+  const { id } = req.params
+
+  const contact = await User.findOne({ _id: userCurrent.id, contacts: id })
+    .select('contacts')
+    .populate('contacts')
+
+  if (contact === null) {
+    return next(new AppError('error get contact', 401))
+  }
+
+  return res.status(200).json({
+    message: 'get contact',
+    data: {
+      contact
+    }
+  })
+})
+
 exports.addContact = tryCathc(async (req, res, next) => {
   const { userCurrent } = req
   const { id } = req.params
