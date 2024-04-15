@@ -216,7 +216,8 @@ exports.resendCodeEmail = tryCathc(async (req, res, next) => {
   }
 
   return res.status(200).json({
-    message: 'code resend'
+    message: 'code resend',
+    status: 'success'
   })
 })
 
@@ -242,7 +243,8 @@ exports.getUser = tryCathc(async (req, res, next) => {
     data: {
       user,
       isContact: contact !== null
-    }
+    },
+    status: 'success'
   })
 })
 
@@ -260,7 +262,8 @@ exports.searchUsers = tryCathc(async (req, res, next) => {
   if (!usersFind) {
     return res.status(200).json({
       message: 'no users found',
-      data: []
+      data: [],
+      status: 'not found'
     })
   }
 
@@ -268,7 +271,8 @@ exports.searchUsers = tryCathc(async (req, res, next) => {
     message: 'search users',
     data: {
       usersFind
-    }
+    },
+    status: 'success'
   })
 })
 
@@ -288,7 +292,8 @@ exports.verifyTokenEmail = tryCathc(async (req, res, next) => {
   }
 
   return res.status(200).json({
-    message: 'token valid'
+    message: 'token valid',
+    status: 'success'
   })
 })
 
@@ -300,6 +305,7 @@ exports.verifyUserAuthAndId = tryCathc(async (req, res, next) => {
     return next(new AppError('User Unknown', 401))
   }
   return res.status(200).json({
-    message: 'user verify success'
+    message: 'user verify success',
+    status: 'success'
   })
 })
