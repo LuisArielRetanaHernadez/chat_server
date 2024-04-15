@@ -2,7 +2,7 @@ const nodemialer = require('nodemailer')
 
 let transport = null
 
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV === 'development') {
   transport = nodemialer.createTransport({
     host: process.env.MAILTRAP_HOST,
     port: process.env.MAILTRAP_PORT,
