@@ -4,22 +4,22 @@ let transport = null
 
 if (process.env.NODE_ENV !== 'development') {
   transport = nodemialer.createTransport({
-    host: 'sandbox.smtp.mailtrap.io',
-    port: 2525,
+    host: process.env.MAILTRAP_HOST,
+    port: process.env.MAILTRAP_PORT,
     auth: {
-      user: 'ecd077e1a353cc',
-      pass: 'c7e902597a90be'
+      user: process.env.SENDGRID_USER,
+      pass: process.env.SENDGRID_PASS
     }
   })
 }
 
 if (process.env.NODE_ENV === 'production') {
   transport = nodemialer.createTransport({
-    host: process.env.HOST,
-    port: process.env.PORT,
+    host: process.env.SENDGRID_HOST,
+    port: process.env.SENDGRID_PORT,
     auth: {
-      user: process.env.USER,
-      pass: process.env.PASS
+      user: process.env.SENDGRID_USER,
+      pass: process.env.SENDGRID_PASS
     }
   })
 }
