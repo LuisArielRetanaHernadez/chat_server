@@ -1,6 +1,9 @@
-const User = require('../database/models/User.model')
+// utils
 const AppError = require('../utils/AppError')
 const tryCathc = require('../utils/tryCathc')
+
+// models
+const User = require('../database/models/User.model')
 
 exports.getContacts = tryCathc(async (req, res, next) => {
   const { userCurrent } = req
@@ -15,7 +18,8 @@ exports.getContacts = tryCathc(async (req, res, next) => {
 
   if (contacts === null) {
     return res.status(200).json({
-      message: 'no found contacts'
+      message: 'no found contacts',
+      status: 'not found'
     })
   }
 
@@ -23,7 +27,8 @@ exports.getContacts = tryCathc(async (req, res, next) => {
     message: 'get contacts',
     data: {
       contacts: contacts[0]
-    }
+    },
+    status: 'success'
   })
 })
 
@@ -43,7 +48,8 @@ exports.getContact = tryCathc(async (req, res, next) => {
 
   if (contact === null) {
     return res.status(200).json({
-      message: 'no found contact'
+      message: 'no found contact',
+      status: 'not found'
     })
   }
 
@@ -55,7 +61,8 @@ exports.getContact = tryCathc(async (req, res, next) => {
     message: 'get contact',
     data: {
       contact
-    }
+    },
+    status: 'success'
   })
 })
 
@@ -75,7 +82,8 @@ exports.isContact = tryCathc(async (req, res, next) => {
     message: 'get contact',
     data: {
       contact
-    }
+    },
+    status: 'success'
   })
 })
 
@@ -107,6 +115,7 @@ exports.addContact = tryCathc(async (req, res, next) => {
     message: 'add contact',
     data: {
       addContact
-    }
+    },
+    status: 'success'
   })
 })
