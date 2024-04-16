@@ -4,8 +4,9 @@
 
     "start": "node server.js",
 
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
 
+    "build": "no build step"
   },
 
   "name": "chat_server",
