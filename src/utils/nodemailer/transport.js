@@ -1,5 +1,7 @@
 const nodemialer = require('nodemailer')
 
+require('dotenv').config()
+
 let transport = null
 
 if (process.env.NODE_ENV === 'development') {
