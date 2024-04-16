@@ -6,7 +6,7 @@
 
     "dev": "nodemon server.js",
 
-    "build": "no build step"
+    "build": "npm install"
   },
 
   "name": "chat_server",
