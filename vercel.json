@@ -6,10 +6,26 @@
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/v1/(.*)",
-      "destination": "/app.js"
+      "src": "/api/v1/users/(.*)",
+      "dest": "/src/routers/user.router.js"
+    },
+    {
+      "src": "/api/v1/messages/(.*)",
+      "dest": "/src/routers/message.router.js"
+    },
+    {
+      "src": "/api/v1/contacts/(.*)",
+      "dest": "/src/routers/contacts.routers.js"
+    },
+    {
+      "src": "/api/v1/cloudinary/(.*)",
+      "dest": "/src/routers/cloudinary.router.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/app.js"
     }
   ]
 }
