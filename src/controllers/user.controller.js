@@ -106,6 +106,7 @@ exports.login = tryCathc(async (req, res, next) => {
   const { email, password } = req.body
   console.log('controlador de login con sus datos pasados a qui ', email, password)
   const user = await User.findOne({ email })
+  console.log('controlador de login con el usuario encontrado ', user)
 
   if (!user) {
     return next(new AppError('invalide crendetials', 401))
