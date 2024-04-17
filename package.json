@@ -4,14 +4,14 @@
 
     "start": "node api/index.js",
 
-    "dev": "nodemon server.js"
+    "dev": "nodemon api/index.js"
   },
 
   "name": "chat_server",
 
   "version": "1.0.0",
 
-  "main": "app.js",
+  "main": "api/index.js",
 
   "keywords": [],
 
