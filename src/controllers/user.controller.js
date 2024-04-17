@@ -104,7 +104,7 @@ exports.uploadPhotoProfile = tryCathc(async (req, res, next) => {
 
 exports.login = tryCathc(async (req, res, next) => {
   const { email, password } = req.body
-
+  console.log('controlador de login con sus datos pasados a qui ', email, password)
   const user = await User.findOne({ email })
 
   if (!user) {
