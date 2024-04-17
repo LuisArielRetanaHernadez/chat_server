@@ -1,12 +1,12 @@
-const app = require('./app')
+const app = require('../app')
 
-const connectDB = require('./src/database/database')
+const connectDB = require('../src/database/database')
 
 // socket
 const { Server } = require('socket.io')
 const { createServer } = require('http')
 
-const namesSpace = require('./src/namesSpace')
+const namesSpace = require('../src/namesSpace')
 
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
