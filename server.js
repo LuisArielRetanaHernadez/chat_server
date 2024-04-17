@@ -28,3 +28,5 @@ const startServer = () => {
 }
 
 startServer()
+
+module.exports = startServer
