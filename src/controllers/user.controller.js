@@ -16,6 +16,7 @@ const signToken = require('../utils/jwt/signToken')
 
 // bcrypt
 const bcrypt = require('bcrypt')
+const ListChat = require('../database/models/ListChat')
 
 exports.register = tryCathc(async (req, res, next) => {
   const { email } = req.body
@@ -65,6 +66,14 @@ exports.register = tryCathc(async (req, res, next) => {
 
   if (!checkSendEmail) {
     return next(new AppError('error send email', 401))
+  }
+
+  const listChat = await ListChat.create({
+    users: [user._id]
+  })
+
+  if (!listChat) {
+    return next(new AppError('error create list chat', 401))
   }
 
   return res.status(201).json({
