@@ -8,7 +8,6 @@ const clients = {}
 
 const verifyConnect = async (socket) => {
   const token = socket.handshake.query.key
-
   if (!token) {
     throw new AppError('token invalid', 401)
   }
@@ -59,21 +58,18 @@ module.exports = (io) => {
       lastName: user.lastName,
       username: user.username
     }
-
     socket.userID = user.id
 
     next()
   })
 
   io.of('/users').on('connection', (socket) => {
-    console.log('users connects ', clients)
     socket.use((event, next) => {
-      console.log('pasara el middleware??')
       if (userMiddleware[event[0]] !== undefined) {
-        console.log('si esta el middleware')
         userMiddleware[event[0]](socket, event[1], next)
       }
     })
+
     socket.on('users online', async () => {
       const usersOnline = await User.find({ isOnline: true })
       socket.emit('users online', usersOnline)
@@ -88,6 +84,7 @@ module.exports = (io) => {
       socket.to(clients[data.to]?.socketID).emit('message', {
         message: data.message,
         to: data.to,
+        from: socket.userID,
         username: clients[socket.userID].username
       })
     })
