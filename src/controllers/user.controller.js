@@ -113,9 +113,6 @@ exports.uploadPhotoProfile = tryCathc(async (req, res, next) => {
 
 exports.login = tryCathc(async (req, res, next) => {
   const { email, password } = req.body
-  console.log('controlador de login con sus datos pasados a qui ', email, password)
-  console.log('controlador de login con el usuario encontrado ', await User.findOne({ email }))
-
   const user = await User.findOne({ email })
 
   if (!user) {
@@ -132,7 +129,6 @@ exports.login = tryCathc(async (req, res, next) => {
 
   // actualizar el campo isOnline a true
   await user.updateOne({ isOnline: true })
-
   await user.save()
 
   user.password = undefined
