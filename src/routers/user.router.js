@@ -24,7 +24,8 @@ const {
   verifyTokenEmail,
   resendCodeEmail,
   uploadPhotoProfile,
-  verifyUserAuthAndId
+  verifyUserAuthAndId,
+  updateUser
 } = require('../controllers/user.controller')
 
 const router = express.Router()
@@ -43,6 +44,8 @@ router.get('/search', auth, searchUsers)
 router.use(auth)
 
 router.get('/:id', getUser)
+
+router.put('/', updateUser)
 
 router.post('/upload/image/profile/:id', verifyUser, protectUser, uploadPhotoProfile)
 
