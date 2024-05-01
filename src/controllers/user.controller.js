@@ -228,6 +228,31 @@ exports.resendCodeEmail = tryCathc(async (req, res, next) => {
   })
 })
 
+exports.updateUser = tryCathc(async (req, res, next) => {
+  const { id } = req.params
+
+  const user = await User.findOne({ _id: id })
+
+  if (!user) {
+    return next(new AppError('user not found', 401))
+  }
+
+  const dataDisinfect = {
+    ...req.body
+  }
+
+  await user.updateOne(dataDisinfect)
+  await user.save()
+
+  return res.status(200).json({
+    message: 'user updated',
+    data: {
+      user
+    },
+    status: 'success'
+  })
+})
+
 exports.getUser = tryCathc(async (req, res, next) => {
   const { userCurrent } = req
   const { id } = req.params
