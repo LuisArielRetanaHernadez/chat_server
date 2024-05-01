@@ -21,7 +21,7 @@ const verifyConnect = async (socket) => {
     return decoded
   })
 
-  const user = await User.findOne({ _id: decoded.id, isOnline: true }, { username: 1, name: 1, lastName: 1 })
+  const user = await User.findOne({ _id: decoded.id }, { username: 1, name: 1, lastName: 1 })
 
   if (!user) {
     throw new AppError('user not found', 401)
@@ -49,6 +49,7 @@ module.exports = (io) => {
       return next(new AppError('user not found', 401))
     }
     if (clients[user.id]) {
+      clients[user.id].socketID = socket.id
       return next()
     }
 
@@ -85,7 +86,7 @@ module.exports = (io) => {
         message: data.message,
         to: data.to,
         from: socket.userID,
-        username: clients[socket.userID].username
+        username: clients[socket.userID]?.username
       })
     })
 
@@ -110,12 +111,12 @@ module.exports = (io) => {
         return new Date(b.messages[0].createdAt) - new Date(a.messages[0].createdAt)
       })
 
-      socket.emit('list chat', chatsOrdends)
+      socket.to(clients[socket.userID].socketID).emit('list chat', chatsOrdends)
     })
 
     socket.on('disconnect', async () => {
-      delete clients[socket.userID]
       await User.findByIdAndUpdate(socket.userID, { isOnline: false })
+      delete clients[socket.userID]
       socket.broadcast.emit('users online', clients)
     })
   })
