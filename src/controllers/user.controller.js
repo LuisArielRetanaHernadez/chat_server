@@ -345,9 +345,12 @@ exports.verifyUserAuthAndId = tryCathc(async (req, res, next) => {
 exports.getListChat = tryCathc(async (req, res, next) => {
   const { userCurrent } = req
 
-  const listChat = await ListChat.findOne({ users: userCurrent.id })
+  const listChat = await ListChat.findOne({ user: userCurrent.id })
+    .populate('chats')
 
-  if (!listChat) {
+  console.log(listChat)
+
+  if (!listChat && listChat !== null) {
     return next(new AppError('list chat not found', 401))
   }
 
