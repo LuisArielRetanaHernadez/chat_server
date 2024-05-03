@@ -25,7 +25,8 @@ const {
   resendCodeEmail,
   uploadPhotoProfile,
   verifyUserAuthAndId,
-  updateUser
+  updateUser,
+  getListChat
 } = require('../controllers/user.controller')
 
 const router = express.Router()
@@ -44,6 +45,8 @@ router.get('/search', auth, searchUsers)
 router.use(auth)
 
 router.get('/:id', getUser)
+
+router.get('/list-chat', getListChat)
 
 router.put('/', updateUser)
 
