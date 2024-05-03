@@ -46,7 +46,7 @@ router.use(auth)
 
 router.get('/:id', getUser)
 
-router.get('/list-chat', getListChat)
+router.get('/chats/all', getListChat)
 
 router.put('/', updateUser)
 
