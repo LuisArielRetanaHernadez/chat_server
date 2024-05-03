@@ -6,10 +6,10 @@ const tryCathc = require('../utils/tryCathc')
 const User = require('../database/models/User.model')
 
 exports.getContacts = tryCathc(async (req, res, next) => {
-  const { userCurrent } = req
+  const { id } = req.params
 
-  const contacts = await User.find({ _id: userCurrent.id })
-    .select('contacts -_id')
+  const contacts = await User.find({ _id: id })
+    .select('contacts')
     .populate('contacts')
 
   if (!contacts && contacts !== null) {
