@@ -346,8 +346,19 @@ exports.getListChat = tryCathc(async (req, res, next) => {
   const { userCurrent } = req
 
   const listChat = await ListChat.findOne({ user: userCurrent.id })
-    .populate('chats')
-
+    .populate([
+      {
+        path: 'chats',
+        populate: [
+          {
+            path: 'users'
+          },
+          {
+            path: 'messages'
+          }
+        ]
+      }
+    ])
   console.log(listChat)
 
   if (!listChat && listChat !== null) {
