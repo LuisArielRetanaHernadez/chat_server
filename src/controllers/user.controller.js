@@ -351,15 +351,17 @@ exports.getListChat = tryCathc(async (req, res, next) => {
         path: 'chats',
         populate: [
           {
-            path: 'users'
+            path: 'users',
+            select: 'name photo username'
           },
           {
-            path: 'messages'
+            path: 'messages',
+            limit: 1,
+            sort: { createdAt: -1 }
           }
         ]
       }
     ])
-  console.log(listChat)
 
   if (!listChat && listChat !== null) {
     return next(new AppError('list chat not found', 401))
