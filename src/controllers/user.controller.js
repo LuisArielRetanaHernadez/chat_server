@@ -69,7 +69,7 @@ exports.register = tryCathc(async (req, res, next) => {
   }
 
   const listChat = await ListChat.create({
-    users: [user._id]
+    user: [user._id]
   })
 
   if (!listChat) {
@@ -363,6 +363,17 @@ exports.getListChat = tryCathc(async (req, res, next) => {
       }
     ])
 
+  console.log('list chats --> ', listChat)
+  // quitar el user del userCurrent para solo obtener el perfil del usuario del contacto
+  const userFormate = listChat.chats.map(chat => {
+    return {
+      user: chat.users.filter(user => user.id !== userCurrent.id)[0],
+      messages: chat.messages[0]
+    }
+  })
+
+  console.log('user formate --> ', userFormate)
+
   if (!listChat && listChat !== null) {
     return next(new AppError('list chat not found', 401))
   }
@@ -370,8 +381,33 @@ exports.getListChat = tryCathc(async (req, res, next) => {
   return res.status(200).json({
     message: 'list chat found',
     data: {
-      listChat
+      listChat: userFormate
     },
+    status: 'success'
+  })
+})
+
+exports.addChatToListChat = tryCathc(async (req, res, next) => {
+  const { userCurrent } = req
+  const { id } = req.params
+
+  const user = await User.findOne({ _id: id })
+
+  if (!user) {
+    return next(new AppError('user not found', 401))
+  }
+
+  const listChat = await ListChat.findOne({ user: userCurrent.id })
+
+  if (!listChat) {
+    return next(new AppError('list chat not found', 401))
+  }
+
+  await listChat.updateOne({ $push: { chats: id } })
+  await listChat.save()
+
+  return res.status(200).json({
+    message: 'chat added',
     status: 'success'
   })
 })
