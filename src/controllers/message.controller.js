@@ -6,7 +6,9 @@ const tryCathc = require('../utils/tryCathc')
 exports.saveMessage = async (req, res, next) => {
   const { message } = req.body
 
-  const listChat = await ListChat.findOne({ _id: req.userCurrent.id })
+  const listChat = await ListChat.findOne({ user: req.userCurrent.id })
+
+  console.log('controlador saveMessage ', listChat)
 
   const newMessage = await Message.create({
     content: message,
